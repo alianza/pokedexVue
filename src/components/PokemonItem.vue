@@ -1,7 +1,7 @@
 <template>
     <div v-if="isLoaded" v-on:click="onPokemonClick(pokemon)" class="pokemon" :style="{backgroundImage: 'url(' + pokemon.sprites.front_default + ')'}">
       <h3 class="pokemon-name">{{ pokemon.name | capitalize}}</h3>
-      <p class="pokemon-type">{{ pokemon.types[0].type.name | capitalize }}</p>
+      <p class="pokemon-type" :style="{backgroundColor: $options.filters.typeToColor(pokemon.types[0].type.name)}">{{ pokemon.types[0].type.name | capitalize }}</p>
     </div>
 </template>
 
@@ -66,7 +66,9 @@ export default {
     margin-bottom: 0;
     background-color: rgba(0, 0, 0, .2);
     border-radius: .2em;
+    text-shadow: 0 0 2px black;
+    color: white;
+    box-shadow: 0 0 2px rgba(0, 0, 0, .5);
   }
 }
-
 </style>

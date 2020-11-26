@@ -57,7 +57,7 @@ export default {
       // console.log(object)
       // object.sort()
       // console.log(object)
-      // this.jsonData.results = object failed attempt...
+      // this.jsonData.results = object Failed attempt...
 
       const list = $('.pokemons-list');
       const listItems = list.children('li');

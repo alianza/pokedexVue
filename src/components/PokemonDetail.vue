@@ -23,32 +23,17 @@
         <div class="details-info-types">
           <h2>Types</h2>
           <div class="details-info-types-type" v-bind:key="type.type.name" v-for="type in pokemon.types"
-               :style="[
-                type.type.name === 'grass' ? {'background-color': 'green'} : {},
-                type.type.name === 'fire' ? {'background-color': 'red'} : {},
-                type.type.name === 'poison' ? {'background-color': 'olivedrab'} : {},
-                type.type.name === 'flying' ? {'background-color': 'skyblue'} : {},
-                type.type.name === 'water' ? {'background-color': 'cornflowerblue'} : {},
-                type.type.name === 'bug' ? {'background-color': 'brown'} : {},
-                type.type.name === 'normal' ? {'background-color': 'beige'} : {},
-                type.type.name === 'electric' ? {'background-color': 'yellow'} : {},
-                type.type.name === 'ground' ? {'background-color': 'gray'} : {},
-                type.type.name === 'fairy' ? {'background-color': 'pink'} : {},
-                type.type.name === 'fighting' ? {'background-color': 'orange'} : {},
-                type.type.name === 'psychic' ? {'background-color': 'mediumpurple'} : {},
-                type.type.name === 'rock' ? {'background-color': 'dimgray'} : {},
-                type.type.name === 'dragon' ? {'background-color': 'darkorange'} : {},
-                type.type.name === 'steel' ? {'background-color': 'slategray'} : {},
-                type.type.name === 'ghost' ? {'background-color': 'lightgray'} : {},
-                type.type.name === 'dark' ? {'background-color': 'darkslategrey'} : {}]">{{ type.type.name | capitalize }}</div>
+               :style="{backgroundColor: $options.filters.typeToColor(type.type.name)}">{{ type.type.name | capitalize }}</div>
         </div>
+
         <div class="details-info-stats">
           <h2>Stats</h2>
           <div class="details-info-stats-stat" v-bind:key="stat.stat.name" v-for="stat in pokemon.stats" :style="{'width': stat.base_stat + 'px'}">{{ stat.stat.name | capitalize }} <div>{{ stat.base_stat }}</div></div>
         </div>
         </div>
       <div class="details-image">
-        <img alt="pokemon image" :src="pokemon.sprites.front_default">
+        <img alt="pokemon image" :src="image">
+        <button v-on:click="toggleImage()" class="button">↻</button>
       </div>
     </div>
   </div>
@@ -61,6 +46,11 @@ export default {
   name: "PokemonDetail",
   props: {
     pokemon: Object,
+  },
+  data() {
+    return {
+      image: this.pokemon.sprites.front_default
+    }
   },
   mounted() {
     this.setStatsMainColor()
@@ -80,6 +70,10 @@ export default {
         $(this).css('background-color', mainColor)
       })
       console.log("Color: " + mainColor);
+    },
+    toggleImage() {
+      this.image = (this.image === this.pokemon.sprites.back_default) ?
+          this.image = this.pokemon.sprites.front_default : this.image = this.pokemon.sprites.back_default
     }
   }
 }
@@ -89,8 +83,6 @@ export default {
 
 .details {
   position: absolute;
-
-  //position: fixed;
   padding: 1em;
   left: 50%;
   transform: translateX(-50%);
@@ -108,24 +100,17 @@ export default {
     padding: 1em;
     margin: -1em;
     cursor: pointer;
-    transition: transform .2s;
+    transition: transform .1s;
     position: absolute;
     top: 1em;
     right: 1em;
 
     &:hover {
-      transform: scale(1.1);
+      transform: scale(1.2);
     }
-  }
 
-  &-image {
-    flex-basis: 256px;
-    flex-grow: 1;
-
-    & img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
+    &:active {
+      transform: scale(.98);
     }
   }
 
@@ -140,6 +125,8 @@ export default {
         border-radius: .2em;
         box-shadow: -1px 1px 2px 0px rgba(0, 0, 0, .5);
         margin-left: 1em;
+        text-shadow: 0 0 2px black;
+        color: white;
 
         &:not(:first-of-type) {
           margin-top: .5em;
@@ -164,8 +151,22 @@ export default {
           box-shadow: 0 0 2px rgba(0, 0, 0, .5);
           border-radius: .2em;
           padding: .1em;
+          text-shadow: 0 0 2px black;
+          color: white;
         }
       }
+    }
+  }
+
+  &-image {
+    flex-basis: 256px;
+    flex-grow: 1;
+    text-align: center;
+
+    & img {
+      width: 100%;
+      height: 90%;
+      object-fit: contain;
     }
   }
 }
@@ -185,6 +186,13 @@ export default {
     flex-wrap: wrap;
     flex-flow: wrap-reverse;
     width: auto;
+
+    &-image {
+
+      & img {
+        height: auto;
+      }
+    }
 
     &-info {
 

@@ -17,7 +17,6 @@
       </ul>
       <p class="menu-bottom">Jan-Willem van Bremen</p>
     </div>
-    <!-- TODO Footer -->
 
     <div class="content">
       <pokemons :json-data="jsonData" :msg="msg"/>
@@ -25,7 +24,9 @@
       <button class="button button-next" v-if="jsonData.next" v-on:click="loadNextPage()">Next page</button>
     </div>
 
-    <div class="footer">PokeDex Vue App</div>
+    <div class="footer">
+      <p>PokeDex Vue App</p>
+    </div>
     <div id="loader">
       <div></div>
     </div>
@@ -131,6 +132,7 @@ export default {
         this.randomPokemon = jsonData
         this.randomDetailIsOpen = true
         $('#loader').removeClass('active')
+        if (this.randomDetailIsOpen && window.scrollY > 100) { window.scrollTo({top: 0, behavior: 'smooth'});}
       }).catch(e => {
         console.log('Error', e);
       });
@@ -268,7 +270,7 @@ body {
   }
 
   & .button {
-    transition: background-color .2s, color .2s;
+    transition: background-color .2s, color .2s, transform .1s;
     font-size: 16px;
     border: none;
     cursor: pointer;
@@ -281,6 +283,11 @@ body {
     &:hover {
       background-color: #222;
       color: white;
+      transform: scale(1.1);
+    }
+
+    &:active {
+      transform: scale(.98);
     }
 
     &-sort {
