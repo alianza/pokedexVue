@@ -14,6 +14,7 @@
       <ul class="menu-top">
         <li v-on:click="jsonData = {}; loadPokemon()">Home</li>
         <li v-on:click="getRandomPokemon()">Random Pokemon</li>
+        <li v-on:click="about()">About</li>
       </ul>
       <p class="menu-bottom">Jan-Willem van Bremen</p>
     </div>
@@ -25,7 +26,7 @@
     </div>
 
     <div class="footer">
-      <p>PokeDex Vue App</p>
+      <p>PokéDex Vue App</p>
     </div>
     <div id="loader">
       <div></div>
@@ -52,7 +53,7 @@ export default {
   data() {
     return {
       jsonData: [],
-      title: "PokeDex",
+      title: "PokéDex",
       msg: "Pick a creature!",
       windowWidth: window.innerWidth,
       totalNumberOfPokemon: 0,
@@ -146,6 +147,9 @@ export default {
       }).catch(e => {
         console.log('Error', e);
       });
+    },
+    about() {
+      alert('This is a Web PokéDex Application for the DTT Test!\nDiscover countless Pokemon and their info!\nMade by Jan-Willem van Bremen - 2020')
     }
   }
 }
@@ -248,6 +252,11 @@ body {
         &:hover {
           cursor: pointer;
           transform: scale(1.1);
+        }
+
+        &:active {
+          cursor: pointer;
+          transform: scale(.98);
         }
       }
     }
