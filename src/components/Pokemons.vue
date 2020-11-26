@@ -78,7 +78,8 @@ export default {
     }
 
     & .button-sort {
-      margin-top: 1em;
+      float: right;
+      margin-top: 0;
     }
   }
 
@@ -106,14 +107,13 @@ export default {
   }
 }
 
-@media only screen and (min-width: 500px) {
+@media only screen and (max-width: 500px) {
   .pokemons {
-
     &-header {
 
       & .button-sort {
-        float: right;
-        margin-top: 0;
+        margin-top: 1em;
+        float: none;
       }
     }
   }

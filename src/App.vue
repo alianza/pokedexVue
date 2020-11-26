@@ -68,7 +68,7 @@ export default {
   methods: {
     doLoad(url) {
       return this.$http.get(url, {responseType: 'json'}).then(response => {
-        console.log(response.data);
+        // console.log(response.data);
         return response.data;
       });
     },
@@ -299,11 +299,11 @@ body {
     }
 
     &-random {
-      position: absolute;
-      z-index: 3;
-      top: .5em;
-      left: 50%;
-      transform: translateX(-50%);
+      position: fixed;
+      z-index: 5;
+      bottom: .8em;
+      right: .8em;
+      box-shadow: 0 0 12px rgba(0, 0, 0, .5);
     }
 
     &-next {
@@ -346,6 +346,19 @@ body {
       box-shadow: 0 0 12px 8px rgba(0, 0, 0, .2), inset 0 0 12px 8px rgba(0, 0, 0, .2);
     }
   }
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #aaa;
+  border-radius: 1em;
 }
 
 @keyframes spin {
