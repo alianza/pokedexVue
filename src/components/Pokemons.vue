@@ -41,7 +41,6 @@ export default {
     togglePokemonDetails(pokemon) {
       this.detailPokemon = pokemon
       this.detailIsOpen = !this.detailIsOpen;
-      if (this.detailIsOpen && window.scrollY > 100) { window.scrollTo({top: 50, behavior: 'smooth'});}
     },
     loaded() {
       console.log('item loaded')

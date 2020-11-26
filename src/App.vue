@@ -132,7 +132,6 @@ export default {
         this.randomPokemon = jsonData
         this.randomDetailIsOpen = true
         $('#loader').removeClass('active')
-        if (this.randomDetailIsOpen && window.scrollY > 100) { window.scrollTo({top: 0, behavior: 'smooth'});}
       }).catch(e => {
         console.log('Error', e);
       });
@@ -262,7 +261,7 @@ body {
 
   & .footer {
     height: 5em;
-    margin-top: 3em;
+    margin-top: 4em;
     padding: 1em;
     background-color: #222;
     color: white;
@@ -307,11 +306,11 @@ body {
     }
 
     &-next {
-      margin-bottom: 1em;
       float: right;
     }
 
     &-prev {
+      float: left;
     }
   }
 
@@ -353,7 +352,7 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
 }
 
 ::-webkit-scrollbar-thumb {
