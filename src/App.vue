@@ -28,10 +28,13 @@
     <div class="footer">
       <p>PokéDex Vue App</p>
     </div>
+
     <div id="loader">
       <div></div>
     </div>
+
     <div class="button button-random" v-on:click="getRandomPokemon" v-if="randomDetailIsOpen">Next →</div>
+
     <transition name="fade">
       <pokemon-detail @closeDialog="closeRandomPokemon" v-if="randomDetailIsOpen" :pokemon="randomPokemon"></pokemon-detail>
     </transition>

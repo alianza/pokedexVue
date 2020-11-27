@@ -167,7 +167,7 @@ export default {
           padding: .1em;
           text-shadow: 0 0 2px black;
           color: white;
-          min-width: 16px;
+          min-width: 20px;
           text-align: center;
         }
       }
@@ -218,9 +218,21 @@ export default {
     }
 
     &-info {
+      text-align: center;
+
+      &-profile {
+
+        & dd {
+          margin-inline-start: 0;
+        }
+      }
 
       &-stats {
         overflow: auto;
+
+        &-stat div {
+          margin: 0 auto;
+        }
       }
     }
   }
