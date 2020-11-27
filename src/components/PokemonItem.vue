@@ -5,8 +5,10 @@
     </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from 'vue'
+
+export default Vue.extend({
   name: 'pokemonItem',
   props: {
     pokemonRef: Object,
@@ -36,7 +38,7 @@ export default {
       this.$emit('clickedPokemon', pokemon)
     },
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

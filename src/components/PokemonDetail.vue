@@ -46,10 +46,11 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import $ from 'jquery'
+import Vue from 'vue'
 
-export default {
+export default Vue.extend({
   name: "PokemonDetail",
   props: {
     pokemon: Object,
@@ -85,7 +86,7 @@ export default {
           this.image = this.pokemon.sprites.front_default : this.image = this.pokemon.sprites.back_default
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

@@ -41,13 +41,13 @@
   </div>
 </template>
 
-<script>
-import Pokemons from "@/components/Pokemons";
-import PokemonDetail from "@/components/PokemonDetail";
-
+<script lang="ts">
+import Vue from "vue";
 import $ from 'jquery'
+import PokemonDetail from "./components/PokemonDetail.vue";
+import Pokemons from "./components/Pokemons.vue";
 
-export default {
+export default Vue.extend({
   name: 'App',
   components: {
     Pokemons,
@@ -155,7 +155,7 @@ export default {
       alert('This is a Web PokéDex Application for the DTT Test!\nDiscover countless Pokemon and their info!\nMade by Jan-Willem van Bremen - 2020')
     }
   }
-}
+})
 </script>
 
 <style lang="scss">

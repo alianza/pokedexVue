@@ -15,12 +15,13 @@
   </div>
 </template>
 
-<script>
-import PokemonItem from "@/components/PokemonItem";
-import PokemonDetail from "@/components/PokemonDetail";
+<script lang="ts">
+import Vue from "vue";
 import $ from "jquery";
+import PokemonDetail from "./PokemonDetail.vue";
+import PokemonItem from "./PokemonItem.vue";
 
-export default {
+export default Vue.extend( {
   name: 'pokemons',
   components: {
     PokemonItem,
@@ -63,7 +64,7 @@ export default {
       list.append(listItems.get().reverse());
     },
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>
