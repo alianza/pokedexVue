@@ -20,7 +20,9 @@
     </div>
 
     <div class="content">
-      <pokemons :json-data="jsonData" :msg="msg"/>
+      <pokemons v-if="showPokemons && jsonData.results" :json-data="jsonData" :msg="msg" @togglePokemonDetails="openPokemonDetails"/>
+      <types v-if="!showPokemons && jsonData.results" :json-data="jsonData" :msg="msg" @clickedTypeItem="loadTypePokemons"/>
+
       <button class="button button-prev" v-if="jsonData.previous" v-on:click="loadPrevPage()">Previous page</button>
       <button class="button button-next" v-if="jsonData.next" v-on:click="loadNextPage()">Next page</button>
     </div>
@@ -33,10 +35,10 @@
       <div></div>
     </div>
 
-    <div class="button button-random" v-on:click="getRandomPokemon" v-if="randomDetailIsOpen">Next →</div>
+    <div class="button button-random" v-on:click="getRandomPokemon" v-if="randomDetailIsOpen && detailIsOpen">Next →</div>
 
     <transition name="fade">
-      <pokemon-detail @closeDialog="closeRandomPokemon" v-if="randomDetailIsOpen" :pokemon="randomPokemon"></pokemon-detail>
+      <pokemon-detail @closeDialog="closePokemonDetails" v-if="detailIsOpen" :pokemon="detailPokemon"></pokemon-detail>
     </transition>
   </div>
 </template>
@@ -46,11 +48,14 @@ import Vue from "vue";
 import $ from 'jquery'
 import PokemonDetail from "./components/PokemonDetail.vue";
 import Pokemons from "./components/Pokemons.vue";
+import Types from "./components/Types.vue";
+import json from "vue-resource/src/http/interceptor/json";
 
 export default Vue.extend({
   name: 'App',
   components: {
     Pokemons,
+    Types,
     PokemonDetail
   },
   data() {
@@ -60,12 +65,14 @@ export default Vue.extend({
       msg: "Pick a creature!",
       windowWidth: window.innerWidth,
       totalNumberOfPokemon: 0,
-      randomPokemon: Object,
-      randomDetailIsOpen: false
+      detailPokemon: Object,
+      detailIsOpen: false,
+      randomDetailIsOpen: false,
+      showPokemons: true,
     }
   },
   mounted() {
-    this.loadPokemon();
+    this.loadPokemons();
     this.setWindowListener();
     this.closeMenuIfMobile();
   },
@@ -73,31 +80,25 @@ export default Vue.extend({
     doLoad(url) {
       return this.$http.get(url, {responseType: 'json'}).then(response => {
         // console.log(response.data);
-        return response.data;
+        return response.data
       });
     },
-    loadPokemon() {
+    loadPokemons() {
       $('#loader').addClass('active');
       this.doLoad('https://pokeapi.co/api/v2/pokemon/').then(jsonData => {
-        this.jsonData = jsonData;
-      }).catch(e => {
-        console.log('Error', e);
-      });
+        this.jsonData = jsonData
+        this.showPokemons = true
+        this.msg = "Pick a creature!"
+      }).catch(e => { console.log('Error', e) });
     },
     loadNextPage() {
       $('#loader').addClass('active');
-      this.doLoad(this.jsonData.next).then(jsonData => {
-        this.jsonData = jsonData;
-      }).catch(e => {
-        console.log('Error', e);
-      });
+      this.doLoad(this.jsonData.next).then(jsonData => { this.jsonData = jsonData })
+          .catch(e => { console.log('Error', e) });
     },
     loadPrevPage() {
-      this.doLoad(this.jsonData.previous).then(jsonData => {
-        this.jsonData = jsonData;
-      }).catch(e => {
-        console.log('Error', e);
-      });
+      this.doLoad(this.jsonData.previous).then(jsonData => {this.jsonData = jsonData})
+          .catch(e => { console.log('Error', e) });
     },
     toggleMenu() {
       const app = $('#app')
@@ -107,16 +108,29 @@ export default Vue.extend({
         app.addClass('menu-active')
       }
     },
+    openPokemonTypes(types) {
+      this.msg = "Choose a Type!"
+      this.jsonData = types
+      this.showPokemons = false
+    },
+    closePokemonTypes(types) {
+      this.jsonData = types
+      this.showPokemons = true
+    },
+    openPokemonDetails(pokemon, showNextButton) {
+      this.detailPokemon = pokemon
+      this.detailIsOpen = true
+      this.randomDetailIsOpen = showNextButton
+    },
+    closePokemonDetails() {
+      this.detailIsOpen = false
+      this.randomDetailIsOpen = false
+    },
     setWindowListener() {
-      this.$nextTick(() => {
-        window.addEventListener('resize', this.onResize)
-      })
+      this.$nextTick(() => { window.addEventListener('resize', this.onResize) })
     },
     onResize() {
       this.windowWidth = window.innerWidth
-      this.closeMenuIfMobile()
-    },
-    closeMenuIfMobile() {
       if (this.windowWidth < 600) {
         $('#app').removeClass('menu-active')
       } else if (this.windowWidth > 900) {
@@ -124,7 +138,7 @@ export default Vue.extend({
       }
     },
     getRandomPokemon() {
-      $('#loader').addClass('active');
+      $('#loader').addClass('active')
 
       if (!this.totalNumberOfPokemon) {
         this.getTotalNumberOfPokemon()
@@ -133,23 +147,38 @@ export default Vue.extend({
 
       const randomIndex = Math.floor(Math.random() * (this.totalNumberOfPokemon - 1)) + 1
       this.doLoad('https://pokeapi.co/api/v2/pokemon/' + randomIndex).then(jsonData => {
-        this.randomPokemon = jsonData
+        this.openPokemonDetails(jsonData, true)
         this.randomDetailIsOpen = true
         $('#loader').removeClass('active')
-      }).catch(e => {
-        console.log('Error', e);
-      });
-    },
-    closeRandomPokemon() {
-      this.randomDetailIsOpen = false
+      }).catch(e => { console.log('Error', e); });
     },
     getTotalNumberOfPokemon() {
       this.doLoad('https://pokeapi.co/api/v2/pokemon-species/?limit=0').then(jsonData => {
         this.totalNumberOfPokemon = jsonData.count
         this.getRandomPokemon()
-      }).catch(e => {
-        console.log('Error', e);
-      });
+      }).catch(e => { console.log('Error', e); });
+    },
+    loadTypes() {
+      $('#loader').addClass('active');
+      this.doLoad('https://pokeapi.co/api/v2/type/').then(jsonData => {
+        this.openPokemonTypes(jsonData)
+        $('#loader').removeClass('active');
+      }).catch(e => { console.log('Error', e); });
+    },
+    loadTypePokemons(type) {
+      $('#loader').addClass('active');
+      this.doLoad(type.url).then(jsonData => {
+        // Change name of pokemons prop to results
+        Object.defineProperty(jsonData, 'results', Object.getOwnPropertyDescriptor(jsonData, 'pokemon'));
+        delete jsonData['pokemon'];
+        // Life all pokemons results one level up in hierarchy
+        jsonData.results.forEach(function (result, index) {
+          jsonData.results[index] = result.pokemon
+        })
+        // console.log(jsonData.results.length); // Number of found pokémons
+        this.closePokemonTypes(jsonData)
+        this.msg = this.$options.filters.capitalize(type.name) + " Pokémons!"
+      }).catch(e => { console.log('Error', e); });
     },
     about() {
       alert('This is a Web PokéDex Application for the DTT Test!\nDiscover countless Pokemon and their info!\nMade by Jan-Willem van Bremen - 2020')
@@ -167,6 +196,10 @@ body {
 
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
+  position: relative;
+  min-height: 100vh;
+  margin-top: -3em;
+  padding-top: 3em;
 
   &.menu-active {
     & .header {
@@ -194,7 +227,7 @@ body {
     background-color: blueviolet;
     box-shadow: 0 0 5px rgba(0, 0, 0, .5);
     margin-left: 0;
-    transition: margin .5s;
+    transition: margin-left .5s;
 
     &-title {
       display: inline;
@@ -267,17 +300,21 @@ body {
 
   & .content {
     margin-top: 3em;
-    padding: 1em;
-    transition: margin .5s;
+    transition: margin-left .5s;
+    padding: 1em 1em 12em;
   }
 
   & .footer {
     height: 5em;
-    margin-top: 4em;
     padding: 1em;
     background-color: #222;
     color: white;
     box-shadow: 0 0 6px rgba(0, 0, 0, .5);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    transition: margin-left .5s;
   }
 
   & .button {
