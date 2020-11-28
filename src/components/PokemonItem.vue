@@ -1,5 +1,5 @@
 <template>
-    <div v-if="isLoaded" v-on:click="onPokemonClick(pokemon)" class="pokemon" :style="{backgroundImage: 'url(' + pokemon.sprites.front_default + ')'}">
+    <div v-if="isLoaded" v-on:click="onPokemonClick(pokemon)" class="pokemon" :style="[pokemon.sprites.front_default ? {backgroundImage: 'url(' + pokemon.sprites.front_default + ')'} : {backgroundImage: 'url(./placeholder.png)', backgroundSize: '50%', backgroundPosition: 'center'}]">
       <h3 class="pokemon-name">{{ pokemon.name | capitalize}}</h3>
       <p class="pokemon-type" :style="{backgroundColor: $options.filters.typeToColor(pokemon.types[0].type.name)}">{{ pokemon.types[0].type.name | capitalize }}</p>
     </div>
@@ -30,9 +30,7 @@ export default Vue.extend({
         this.pokemon = jsonData
         this.isLoaded = true
         this.$emit('init')
-      }).catch(e => {
-        console.log('Error', e);
-      });
+      }).catch(e => { console.log('Error', e); });
     },
     onPokemonClick(pokemon) {
       this.$emit('clickedPokemon', pokemon)

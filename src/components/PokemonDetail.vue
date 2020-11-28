@@ -33,13 +33,13 @@
           <h2>Stats</h2>
           <div class="details-info-stats-stat" v-bind:key="stat.stat.name" v-for="stat in pokemon.stats">
             {{ stat.stat.name | capitalize }}
-            <div :style="{'width': stat.base_stat + 'px'}">{{ stat.base_stat }}</div>
+            <div :style="{width: stat.base_stat + 'px'}">{{ stat.base_stat }}</div>
           </div>
         </div>
       </div>
       <div class="details-image">
         <img alt="pokemon image" :src="image">
-        <button v-on:click="toggleImage()" class="button">↻</button>
+        <button v-if="!this.image.includes('placeholder')" v-on:click="toggleImage()" class="button">↻</button>
       </div>
     </div>
     </div>
@@ -57,7 +57,7 @@ export default Vue.extend({
   },
   data() {
     return {
-      image: this.pokemon.sprites.front_default
+      image: (this.pokemon.sprites.front_default) ? this.pokemon.sprites.front_default : './placeholder.png'
     }
   },
   mounted() {

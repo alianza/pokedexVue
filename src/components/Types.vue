@@ -1,7 +1,7 @@
 <template>
   <div class="types">
     <div class="types-header">
-      <h1>Choose a Type!</h1>
+      <h1>{{ msg }}</h1>
       <div class="button button-sort" v-on:click="sort">Sort ⇕</div>
     </div>
     <ul class="types-list">
@@ -24,6 +24,7 @@ export default Vue.extend( {
   },
   props: {
     jsonData: Object,
+    msg: String,
   },
   methods: {
     clickedType(type) {

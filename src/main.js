@@ -34,6 +34,8 @@ Vue.filter('typeToColor', function (value) {
     case 'steel' : return 'slategray'
     case 'ghost' : return 'lightgray'
     case 'dark' : return 'darkslategrey'
+    case 'ice' : return 'aliceblue'
+    case 'shadow' : return 'black'
   }
 })
 
