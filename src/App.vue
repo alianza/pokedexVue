@@ -12,8 +12,9 @@
     <div class="menu">
       <h1>Menu</h1>
       <ul class="menu-top">
-        <li v-on:click="jsonData = {}; loadPokemon()">Home</li>
-        <li v-on:click="getRandomPokemon()">Random Pokemon</li>
+        <li v-on:click="jsonData = []; setUrl('')">Home</li>
+        <li v-on:click="jsonData = []; setUrl('types')">Types</li>
+        <li v-on:click="setUrl('random')">Random Pokemon</li>
         <li v-on:click="about()">About</li>
       </ul>
       <p class="menu-bottom">Jan-Willem van Bremen</p>
@@ -74,7 +75,7 @@ export default Vue.extend({
   mounted() {
     this.loadPokemons();
     this.setWindowListener();
-    this.closeMenuIfMobile();
+    this.checkUrl();
   },
   methods: {
     doLoad(url) {
@@ -181,7 +182,32 @@ export default Vue.extend({
       }).catch(e => { console.log('Error', e); });
     },
     about() {
-      alert('This is a Web PokéDex Application for the DTT Test!\nDiscover countless Pokemon and their info!\nMade by Jan-Willem van Bremen - 2020')
+      alert('This is a Web PokéDex Application for the DTT Test!\n' +
+          'Discover countless Pokemon and their info!\n' +
+          'Made by Jan-Willem van Bremen - 2020')
+    },
+    checkUrl() {
+      let url = window.location.href
+      let path = window.location.pathname
+      console.log(url);
+      console.log('path ' + window.location.pathname);
+
+      if (path.includes('types')) {
+        console.log('TYPES')
+        this.loadTypes()
+      } else if (path.includes('random')) {
+        console.log('RANDOM')
+        this.getRandomPokemon()
+      } else {
+        console.log('HOME')
+        this.loadPokemons()
+      }
+    },
+    setUrl(page) {
+      let url = window.location.origin
+      url += '/' + page
+      window.location.href = url
+      console.log(url)
     }
   }
 })
