@@ -43,25 +43,7 @@ let app = new Vue({
   http: {
     root: '/root',
   },
-  data() {
-    return {
-      baseUrl: "https://pokeapi.co/api/v2",
-    }
-  },
   render: h => h(App),
-  methods: {
-    doLoad(url) { // Base method for doing http Get requests
-      return this.$http.get(url, {responseType: 'json'}).then(response => {
-        // console.log(response.data);
-        return response.data
-      });
-    },
-    loadPokemons() {
-      return this.doLoad(this.baseUrl + '/pokemon').then(jsonData => {
-          return jsonData
-      }).catch(e => { console.log('Error', e) });
-    },
-  }
 })
 
 app.$mount('#app');

@@ -7,6 +7,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import PokemonService from ".././services/PokemonService";
 
 export default Vue.extend({
   name: 'pokemonItem',
@@ -24,13 +25,11 @@ export default Vue.extend({
   },
   methods: {
     loadPokemon() {
-      this.$http.get(this.pokemonRef.url, {responseType: 'json'}).then(response => {
-        return response.data;
-      }).then(jsonData => {
+      PokemonService.doLoad(this.pokemonRef.url).then(jsonData => {
         this.pokemon = jsonData
         this.isLoaded = true
         this.$emit('init')
-      }).catch(e => { console.log('Error', e); });
+      });
     },
     onPokemonClick(pokemon) {
       this.$emit('clickedPokemon', pokemon)
