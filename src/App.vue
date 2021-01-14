@@ -43,7 +43,6 @@ import $ from 'jquery'
 import PokemonDetail from "./components/PokemonDetail.vue";
 import Pokemons from "./components/Pokemons.vue";
 import Types from "./components/Types.vue";
-import json from "vue-resource/src/http/interceptor/json";
 import PokeHeader from "./components/Header.vue";
 import PokeFooter from "./components/Footer.vue";
 
@@ -61,6 +60,7 @@ export default Vue.extend({
       jsonData: [],
       title: "PokéDex",
       msg: "Pick a creature!",
+      baseUrl: this.$root.baseUrl,
       windowWidth: window.innerWidth,
       totalNumberOfPokemon: 0,
       detailPokemon: Object,
@@ -113,15 +113,12 @@ export default Vue.extend({
         $('#app').addClass('menu-active')
       }
     },
-    doLoad(url) { // Base method for doing http Get requests
-      return this.$http.get(url, {responseType: 'json'}).then(response => {
-        // console.log(response.data);
-        return response.data
-      });
+    doLoad(url) {
+      return this.$root.doLoad(url)
     },
     loadPokemons() {
       $('#loader').addClass('active');
-      this.doLoad('https://pokeapi.co/api/v2/pokemon/').then(jsonData => {
+      this.$root.loadPokemons(this.baseUrl + '/pokemon').then(jsonData => {
         this.jsonData = jsonData
         this.showPokemons = true
         this.msg = "Pick a creature!"
@@ -145,21 +142,21 @@ export default Vue.extend({
       }
       // Create random number between 0 and total number of pokemon
       const randomIndex = Math.floor(Math.random() * (this.totalNumberOfPokemon - 1)) + 1
-      this.doLoad('https://pokeapi.co/api/v2/pokemon/' + randomIndex).then(jsonData => {
+      this.doLoad(this.baseUrl + '/pokemon/' + randomIndex).then(jsonData => {
         this.openPokemonDetails(jsonData, true)
         this.randomDetailIsOpen = true
         $('#loader').removeClass('active')
       }).catch(e => { console.log('Error', e); });
     },
     getTotalNumberOfPokemon() {
-      this.doLoad('https://pokeapi.co/api/v2/pokemon-species/?limit=0').then(jsonData => {
+      this.doLoad(this.baseUrl + '/pokemon-species/?limit=0').then(jsonData => {
         this.totalNumberOfPokemon = jsonData.count
         this.loadRandomPokemon()
       }).catch(e => { console.log('Error', e); });
     },
     loadTypes() { // Load all pokemon types
       $('#loader').addClass('active');
-      this.doLoad('https://pokeapi.co/api/v2/type/').then(jsonData => {
+      this.doLoad(this.baseUrl + '/v2/type/').then(jsonData => {
         this.jsonData = jsonData
         this.showPokemons = false
         $('#loader').removeClass('active');
