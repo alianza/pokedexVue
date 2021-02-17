@@ -3,8 +3,8 @@
     <div v-on:click="handleMenuIconClick" class="menu-close">✖</div>
     <h1>Menu</h1>
     <ul class="menu-top">
-      <li v-on:click="handleMenuItemClick('home', $event.target);" class="active">Home</li>
-      <li v-on:click="handleMenuItemClick('types', $event.target);">Types</li>
+      <router-link tag="li" to="/" >Home</router-link>
+      <router-link tag="li" to="/types">Types</router-link>
       <li v-on:click="handleMenuItemClick('random', $event.target);">Random Pokemon</li>
       <li v-on:click="handleMenuItemClick('about', $event.target);">About</li>
     </ul>
