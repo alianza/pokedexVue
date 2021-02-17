@@ -13,9 +13,8 @@
   </div>
 </template>
 
-<script lang="ts">
+<script >
 import Vue from "vue";
-import $ from "jquery";
 import PokemonItem from "./PokemonItem.vue";
 
 export default Vue.extend( {
@@ -29,7 +28,7 @@ export default Vue.extend( {
   },
   mounted() {
     if (!this.jsonData.results.length) {
-      $('#loader').removeClass('active')
+      document.getElementById('loader').classList.remove('active')
     }
   },
   data() {
@@ -46,21 +45,18 @@ export default Vue.extend( {
       console.log('item loaded')
       this.loadedItems++ // Increase loadedItems until equal with jsondata.results.length
       if (this.loadedItems === this.jsonData.results.length) {
-        $('#loader').removeClass('active');
+        document.getElementById('loader').classList.remove('active');
         this.loadedItems = 0
       }
     },
     sort() {
-      // console.log(this.jsonData)
-      // const object = [this.jsonData.results]
-      // console.log(object)
-      // object.sort()
-      // console.log(object)
-      // this.jsonData.results = object Failed attempt...
-
-      const list = $('.pokemons-list');
-      const listItems = list.children('li');
-      list.append(listItems.get().reverse());
+      let list = document.getElementsByClassName('pokemons-list')[0]
+      let children = list.children;
+      children = [...children].reverse();
+      list.innerHTML = '';
+      children.forEach(function (result) {
+        list.innerHTML += result.outerHTML;
+      })
     },
   }
 })

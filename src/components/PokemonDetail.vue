@@ -57,8 +57,7 @@
   </div>
 </template>
 
-<script lang="ts">
-import $ from 'jquery'
+<script>
 import Vue from 'vue'
 
 export default Vue.extend({
@@ -89,13 +88,13 @@ export default Vue.extend({
       this.$emit('closeDialog');
     },
     setStatsMainColor() {
-      const mainColor = $('.details-info-types-type').first().css('background-color')
-      $('.details-info-stats-stat div').each(function () {
-        $(this).css('background-color', mainColor)
-      })
+      const mainColor = document.getElementsByClassName('details-info-types-type')[0].style.backgroundColor
+      for (let stat of document.getElementsByClassName('details-info-stats-stat')) {
+        stat.children[0].style.backgroundColor = mainColor
+      }
     },
     toggleImage() {
-      $('.flip-box').toggleClass('active')
+      document.getElementsByClassName('flip-box')[0].classList.toggle('active')
     },
     onTypeClick(type) {
       this.$emit('onDetailTypeClick', type)
@@ -273,6 +272,7 @@ export default Vue.extend({
   height: 100%;
   background-color: rgba(0, 0, 0, .65);
   z-index: 2;
+  cursor: pointer;
 }
 
 @media only screen and (max-width: 600px) {

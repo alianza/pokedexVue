@@ -12,9 +12,8 @@
   </div>
 </template>
 
-<script lang="ts">
+<script >
 import Vue from "vue";
-import $ from "jquery";
 import TypeItem from "./TypeItem.vue";
 
 export default Vue.extend( {
@@ -30,16 +29,13 @@ export default Vue.extend( {
       this.$emit('clickedTypeItem', type)
     },
     sort() {
-      // console.log(this.jsonData)
-      // const object = [this.jsonData.results]
-      // console.log(object)
-      // object.sort()
-      // console.log(object)
-      // this.jsonData.results = object Failed attempt...
-
-      const list = $('.types-list');
-      const listItems = list.children('li');
-      list.append(listItems.get().reverse());
+      let list = document.getElementsByClassName('types-list')[0]
+      let children = list.children;
+      children = [...children].reverse();
+      list.innerHTML = '';
+      children.forEach(function (result) {
+        list.innerHTML += result.outerHTML;
+      })
     },
   }
 })

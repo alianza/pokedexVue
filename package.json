@@ -9,13 +9,11 @@
   },
   "dependencies": {
     "core-js": "^3.6.5",
-    "jquery": "^3.5.1",
     "typescript-eslint": "0.0.1-alpha.0",
     "vue": "^2.6.11",
     "vue-resource": "^1.5.1"
   },
   "devDependencies": {
-    "@types/jquery": "^3.5.4",
     "@vue/eslint-config-typescript": "^4.0.0",
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-eslint": "~4.5.0",

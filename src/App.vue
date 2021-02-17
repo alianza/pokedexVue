@@ -17,13 +17,13 @@
 
     <div class="content">
       <pokemons
-          v-if="showPokemons && jsonData.results"
+          v-if="showPokémons && jsonData.results"
           :json-data="jsonData"
           :msg="msg"
           @togglePokemonDetails="openPokemonDetails">
       </pokemons>
 
-      <types v-if="!showPokemons && jsonData.results"
+      <types v-if="!showPokémons && jsonData.results"
              :json-data="jsonData"
              @clickedTypeItem="loadTypePokemons">
       </types>
@@ -51,15 +51,14 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import Vue from "vue";
-import $ from 'jquery'
 import PokemonDetail from "./components/PokemonDetail.vue";
 import Pokemons from "./components/Pokemons.vue";
 import Types from "./components/Types.vue";
 import PokeHeader from "./components/Header.vue";
 import PokeFooter from "./components/Footer.vue";
-import PokemonService from "./services/PokemonService";
+import PokémonService from "./services/PokémonService";
 
 export default Vue.extend({
   name: 'App',
@@ -75,17 +74,15 @@ export default Vue.extend({
       jsonData: [],
       title: "PokéDex",
       msg: "Pick a creature!",
-      baseUrl: this.$root.baseUrl,
       windowWidth: window.innerWidth,
-      totalNumberOfPokemon: 0,
       detailPokemon: Object,
       detailIsOpen: false,
       randomDetailIsOpen: false,
-      showPokemons: true,
+      showPokémons: true,
     }
   },
   mounted() {
-    this.loadPokemons();
+    this.loadPokémons();
     this.setWindowListener();
   },
   methods: {
@@ -100,7 +97,7 @@ export default Vue.extend({
     },
     onMenuItemClick(item, elem) {
       switch (item) {
-        case 'home': { this.jsonData = []; this.loadPokemons(); this.setActiveMenuItem(elem); break }
+        case 'home': { this.jsonData = []; this.loadPokémons(); this.setActiveMenuItem(elem); break }
         case 'types': { this.loadTypes(); this.setActiveMenuItem(elem); break }
         case 'random': { this.loadRandomPokemon(); break }
         case 'about': { this.about(); break } }
@@ -111,11 +108,11 @@ export default Vue.extend({
       this.closePokemonDetails()
     },
     setActiveMenuItem(elem) {
-      $('.active').removeClass('active');
-      $(elem).addClass('active');
+      document.getElementsByClassName('active')[0].classList.remove('active');
+      elem.classList.add('active');
     },
     toggleMenu() {
-      $('#app').toggleClass('menu-active')
+      document.getElementById('app').classList.toggle('menu-active')
     },
     setWindowListener() { // Listener for window size
       this.$nextTick(() => { window.addEventListener('resize', this.onResize) })
@@ -123,71 +120,53 @@ export default Vue.extend({
     onResize() { // Callback for window resize event
       this.windowWidth = window.innerWidth
       if (this.windowWidth < 600) {
-        $('#app').removeClass('menu-active')
+        document.getElementById('app').classList.remove('menu-active')
       } else if (this.windowWidth > 900) {
-        $('#app').addClass('menu-active')
+        document.getElementById('app').classList.add('menu-active')
       }
     },
-    loadPokemons() {
+    loadPokémons() {
       this.activateLoader()
-      PokemonService.loadPokemons().then(jsonData => {
+      PokémonService.getPokémons().then(jsonData => {
         this.jsonData = jsonData
-        this.showPokemons = true
+        this.showPokémons = true
         this.msg = "Pick a creature!"
       });
     },
     loadNextPage() {
       this.activateLoader()
-      PokemonService.doLoad(this.jsonData.next).then(jsonData => {
+      PokémonService.doLoad(this.jsonData.next).then(jsonData => {
         this.jsonData = jsonData
       });
     },
     loadPrevPage() {
-      PokemonService.doLoad(this.jsonData.previous).then(jsonData => {
+      PokémonService.doLoad(this.jsonData.previous).then(jsonData => {
         this.jsonData = jsonData
       });
     },
     loadRandomPokemon() {
       this.activateLoader()
 
-      if (!this.totalNumberOfPokemon) { // Measure total number of pokemon first
-        this.getTotalNumberOfPokemon()
-        return
-      }
-      // Create random number between 0 and total number of pokemon
-      const randomIndex = Math.floor(Math.random() * (this.totalNumberOfPokemon - 1)) + 1
-      PokemonService.loadRandomPokemon(randomIndex).then(jsonData => {
+      PokémonService.getRandomPokémon().then(jsonData => {
         this.openPokemonDetails(jsonData, true)
         this.randomDetailIsOpen = true
         this.deActivateLoader()
       });
     },
-    getTotalNumberOfPokemon() {
-      PokemonService.getTotalNumberOfPokemon().then(jsonData => {
-        this.totalNumberOfPokemon = jsonData.count
-        this.loadRandomPokemon()
-      });
-    },
     loadTypes() { // Load all pokemon types
       this.activateLoader()
-      PokemonService.loadTypes().then(jsonData => {
+      PokémonService.getTypes().then(jsonData => {
         this.jsonData = jsonData
-        this.showPokemons = false
+        this.showPokémons = false
         this.deActivateLoader()
       });
     },
     loadTypePokemons(type) { // Load all pokemon of a type
+      console.log('load: ' + type.name);
       this.activateLoader()
-      PokemonService.doLoad(type.url).then(jsonData => {
-        // Change name of pokemons prop to results
-        Object.defineProperty(jsonData, 'results', Object.getOwnPropertyDescriptor(jsonData, 'pokemon'));
-        delete jsonData['pokemon'];
-        // Life all pokemons results one level up in hierarchy
-        jsonData.results.forEach(function (result, index) {
-          jsonData.results[index] = result.pokemon
-        })
+      PokémonService.getTypePokémons(type.name).then(jsonData => {
         this.jsonData = jsonData
-        this.showPokemons = true
+        this.showPokémons = true
         this.msg = `${this.$options.filters.capitalize(type.name)} Pokémons!`
       });
     },
@@ -197,10 +176,11 @@ export default Vue.extend({
           'Made by Jan-Willem van Bremen - 2020')
     },
     activateLoader() {
-      $('#loader').addClass('active');
+      document.getElementById('loader').classList.add('active');
     },
+
     deActivateLoader() {
-      $('#loader').removeClass('active');
+      document.getElementById('loader').classList.remove('active');
     }
   }
 })

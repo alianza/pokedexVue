@@ -5,9 +5,9 @@
     </div>
 </template>
 
-<script lang="ts">
+<script >
 import Vue from 'vue'
-import PokemonService from ".././services/PokemonService";
+import PokemonService from "../services/PokémonService";
 
 export default Vue.extend({
   name: 'pokemonItem',
