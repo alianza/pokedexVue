@@ -6,20 +6,9 @@
     <PokeMenu @clickedMenuIcon="toggleMenu" @onMenuItemClick="onMenuItemClick"></PokeMenu>
 
     <div class="content">
-      <pokemons
-          v-if="showPokémons && jsonData.results"
-          :json-data="jsonData"
-          :msg="msg"
-          @togglePokemonDetails="openPokemonDetails">
-      </pokemons>
 
-      <types v-if="!showPokémons && jsonData.results"
-             :json-data="jsonData"
-             @clickedTypeItem="loadTypePokemons">
-      </types>
+      <router-view @togglePokemonDetails="openPokemonDetails"></router-view>
 
-      <button class="button button-prev" v-if="jsonData.previous" v-on:click="loadPrevPage()">Previous page</button>
-      <button class="button button-next" v-if="jsonData.next" v-on:click="loadNextPage()">Next page</button>
     </div>
 
     <PokeFooter></PokeFooter>
@@ -40,12 +29,11 @@
 <script>
 import Vue from "vue";
 import PokemonDetail from "./components/PokemonDetail.vue";
-import Pokemons from "./components/Pokemons.vue";
-import Types from "./components/Types.vue";
 import PokeHeader from "./components/PokeHeader.vue";
 import PokeMenu from "./components/PokeMenu.vue"
 import PokeFooter from "./components/PokeFooter.vue";
-import PokémonService from "./services/PokémonService";
+import PokémonService from "./helpers/services/PokémonService";
+import Loader from "@/helpers/Loader";
 
 export default Vue.extend({
   name: 'App',
@@ -53,15 +41,12 @@ export default Vue.extend({
     PokeHeader,
     PokeMenu,
     PokeFooter,
-    Pokemons,
-    Types,
     PokemonDetail,
   },
   data() {
     return {
       jsonData: [],
       title: "PokéDex",
-      msg: "Pick a creature!",
       windowWidth: window.innerWidth,
       detailPokemon: Object,
       detailIsOpen: false,
@@ -70,7 +55,6 @@ export default Vue.extend({
     }
   },
   mounted() {
-    this.loadPokémons();
     this.setWindowListener();
   },
   methods: {
@@ -85,7 +69,7 @@ export default Vue.extend({
     },
     onMenuItemClick(item, elem) {
       switch (item) {
-        case 'home': { this.jsonData = []; this.loadPokémons(); this.setActiveMenuItem(elem); break }
+        case 'home': { this.jsonData = []; this.setActiveMenuItem(elem); break }
         case 'types': { this.loadTypes(); this.setActiveMenuItem(elem); break }
         case 'random': { this.loadRandomPokemon(); break }
         case 'about': { this.about(); break } }
@@ -113,49 +97,13 @@ export default Vue.extend({
         document.getElementById('app').classList.add('menu-active')
       }
     },
-    loadPokémons() {
-      this.activateLoader()
-      PokémonService.getPokémons().then(jsonData => {
-        this.jsonData = jsonData
-        this.showPokémons = true
-        this.msg = "Pick a creature!"
-      });
-    },
-    loadNextPage() {
-      this.activateLoader()
-      PokémonService.doLoad(this.jsonData.next).then(jsonData => {
-        this.jsonData = jsonData
-      });
-    },
-    loadPrevPage() {
-      PokémonService.doLoad(this.jsonData.previous).then(jsonData => {
-        this.jsonData = jsonData
-      });
-    },
     loadRandomPokemon() {
-      this.activateLoader()
+      Loader.showLoader()
 
       PokémonService.getRandomPokémon().then(jsonData => {
         this.openPokemonDetails(jsonData, true)
         this.randomDetailIsOpen = true
-        this.deActivateLoader()
-      });
-    },
-    loadTypes() { // Load all pokemon types
-      this.activateLoader()
-      PokémonService.getTypes().then(jsonData => {
-        this.jsonData = jsonData
-        this.showPokémons = false
-        this.deActivateLoader()
-      });
-    },
-    loadTypePokemons(type) { // Load all pokemon of a type
-      console.log('load: ' + type.name);
-      this.activateLoader()
-      PokémonService.getTypePokémons(type.name).then(jsonData => {
-        this.jsonData = jsonData
-        this.showPokémons = true
-        this.msg = `${this.$options.filters.capitalize(type.name)} Pokémons!`
+        Loader.hideLoader()
       });
     },
     about() {
@@ -163,22 +111,21 @@ export default Vue.extend({
           'Discover countless Pokemon and their info!\n' +
           'Made by Jan-Willem van Bremen - 2020')
     },
-    activateLoader() {
-      document.getElementById('loader').classList.add('active');
-    },
-
-    deActivateLoader() {
-      document.getElementById('loader').classList.remove('active');
-    }
   }
 })
 </script>
 
 <style lang="scss">
+
 body {
   padding: 0;
   margin: 0;
   overflow-x: hidden;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
 }
 
 #app {

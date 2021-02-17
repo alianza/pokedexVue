@@ -1,49 +1,33 @@
 import Vue from 'vue'
+import VueRouter from 'vue-router'
 import App from './App.vue'
-import VueResource from 'vue-resource';
-Vue.use(VueResource);
+import AllPokemons from './components/Pokemons/AllPokemons'
+import TypePokemons from './components/Pokemons/TypePokemons'
+import Types from './components/Types'
 
-Vue.config.productionTip = false
+// Filters
+import './helpers/filters/Capitalize'
+import './helpers/filters/TypeToColor'
 
-// Filter for capitalization
-Vue.filter('capitalize', function (value) {
-  if (!value) return ''
-  value = value.toString()
-  return value.charAt(0).toUpperCase() + value.slice(1)
-})
+Vue.use(VueRouter);
 
-// Filter for Colors associated with different Pokemon types
-Vue.filter('typeToColor', function (value) {
-  if (!value) return ''
-  value = value.toString()
-  switch (value) {
-    case 'grass' : return 'green'
-    case 'fire' : return 'red'
-    case 'poison' : return 'olivedrab'
-    case 'flying' : return 'skyblue'
-    case 'water' : return 'cornflowerblue'
-    case 'bug' : return 'brown'
-    case 'normal' : return 'blanchedalmond'
-    case 'electric' : return 'yellow'
-    case 'ground' : return 'gray'
-    case 'fairy' : return 'pink'
-    case 'fighting' : return 'orange'
-    case 'psychic' : return 'mediumpurple'
-    case 'rock' : return 'dimgray'
-    case 'dragon' : return 'darkorange'
-    case 'steel' : return 'slategray'
-    case 'ghost' : return 'lightgray'
-    case 'dark' : return 'darkslategrey'
-    case 'ice' : return 'aliceblue'
-    case 'shadow' : return 'black'
-  }
-})
+Vue.config.productionTip = false;
+
+const routes = [
+  { path: '/', component: AllPokemons },
+  { path: '/page/:page', component: AllPokemons },
+  { path: '/types', component: Types },
+  { path: '/type/:type', component: TypePokemons }
+];
+
+const router = new VueRouter({ routes, linkExactActiveClass: "active", mode: "history" });
 
 let app = new Vue({
   http: {
     root: '/root',
   },
+  router,
   render: h => h(App),
-})
+});
 
 app.$mount('#app');
