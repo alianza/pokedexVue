@@ -1,19 +1,9 @@
 <template>
   <div id="app" class="menu-active">
 
-    <PokeHeader @clickedMenuIcon="toggleMenu()" :title="title"></PokeHeader>
+    <PokeHeader @clickedMenuIcon="toggleMenu" :title="title"></PokeHeader>
 
-    <div class="menu">
-      <div v-on:click="toggleMenu()" class="menu-close">✖</div>
-      <h1>Menu</h1>
-      <ul class="menu-top">
-        <li v-on:click="onMenuItemClick('home', $event.target);" class="active">Home</li>
-        <li v-on:click="onMenuItemClick('types', $event.target);">Types</li>
-        <li v-on:click="onMenuItemClick('random', $event.target);">Random Pokemon</li>
-        <li v-on:click="onMenuItemClick('about', $event.target);">About</li>
-      </ul>
-      <p class="menu-bottom">Jan-Willem van Bremen</p>
-    </div>
+    <PokeMenu @clickedMenuIcon="toggleMenu" @onMenuItemClick="onMenuItemClick"></PokeMenu>
 
     <div class="content">
       <pokemons
@@ -41,12 +31,8 @@
     <div class="button button-random" v-on:click="loadRandomPokemon" v-if="randomDetailIsOpen && detailIsOpen">Next →</div>
 
     <transition name="fade">
-      <pokemon-detail
-          @closeDialog="closePokemonDetails"
-          @onDetailTypeClick="onDetailTypeClick"
-          v-if="detailIsOpen"
-          :pokemon="detailPokemon">
-      </pokemon-detail>
+      <pokemon-detail @closeDialog="closePokemonDetails" @onDetailTypeClick="onDetailTypeClick"
+                      v-if="detailIsOpen" :pokemon="detailPokemon"></pokemon-detail>
     </transition>
   </div>
 </template>
@@ -56,14 +42,16 @@ import Vue from "vue";
 import PokemonDetail from "./components/PokemonDetail.vue";
 import Pokemons from "./components/Pokemons.vue";
 import Types from "./components/Types.vue";
-import PokeHeader from "./components/Header.vue";
-import PokeFooter from "./components/Footer.vue";
+import PokeHeader from "./components/PokeHeader.vue";
+import PokeMenu from "./components/PokeMenu.vue"
+import PokeFooter from "./components/PokeFooter.vue";
 import PokémonService from "./services/PokémonService";
 
 export default Vue.extend({
   name: 'App',
   components: {
     PokeHeader,
+    PokeMenu,
     PokeFooter,
     Pokemons,
     Types,

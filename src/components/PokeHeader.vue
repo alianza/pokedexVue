@@ -1,6 +1,6 @@
 <template>
   <div class="header">
-    <div v-on:click="onMenuIconClick" class="menu-icon">
+    <div v-on:click="handleMenuIconClick" class="menu-icon">
       <div></div>
       <div></div>
       <div></div>
@@ -18,8 +18,8 @@ export default Vue.extend({
     title: String,
   },
   methods: {
-    onMenuIconClick() {
-      this.$emit('clickedMenuIcon')
+    handleMenuIconClick() {
+      this.$emit('clickedMenuIcon');
     },
   }
 })
