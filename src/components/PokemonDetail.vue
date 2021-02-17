@@ -67,8 +67,8 @@ export default Vue.extend({
   },
   data() {
     return { // If no sprites set placeholder
-      imageFront: (this.pokemon.sprites.front_default) ? this.pokemon.sprites.front_default : './placeholder.png',
-      imageBack: (this.pokemon.sprites.back_default) ? this.pokemon.sprites.back_default : './placeholder.png',
+      imageFront: (this.pokemon.sprites.front_default) ? this.pokemon.sprites.front_default : require('../assets/placeholder.png'),
+      imageBack: (this.pokemon.sprites.back_default) ? this.pokemon.sprites.back_default : require('../assets/placeholder.png'),
     }
   },
   mounted() {
