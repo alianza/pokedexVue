@@ -44,7 +44,6 @@ export default Vue.extend( {
       const currentPage = parseInt(this.$route.params.page);
       const offset = (currentPage - 1) * PokémonService.basePageLimit;
       this.page = currentPage;
-      console.log(currentPage);
       this.loadPagedPokémons(offset);
     } else {
       this.loadPokémons();
