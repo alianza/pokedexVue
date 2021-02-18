@@ -6,7 +6,7 @@
     </div>
     <ul class="pokemons-list">
       <li v-bind:key="pokemon.name" v-for="pokemon in jsonData.results" class="pokemons-item">
-        <pokemon-item @init="loaded" @clickedPokemon="onPokemonClick" :pokemonRef="pokemon"></pokemon-item>
+        <router-link :to="{ name: 'AllPokemonDetail', params: { pokemonName: pokemon.name } }"><pokemon-item @init="loaded" :pokemonRef="pokemon"></pokemon-item></router-link>
       </li>
     </ul>
 
@@ -50,9 +50,6 @@ export default Vue.extend( {
     }
   },
   methods: {
-    onPokemonClick(pokemon) {
-      this.$emit('togglePokemonDetails', pokemon)
-    },
     loadPokémons() {
       Loader.showLoader()
       PokémonService.getPokémons().then(jsonData => {
