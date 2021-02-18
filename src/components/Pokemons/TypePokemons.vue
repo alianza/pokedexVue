@@ -61,13 +61,7 @@ export default Vue.extend( {
       }
     },
     sort() {
-      let list = document.getElementsByClassName('pokemons-list')[0]
-      let children = list.children;
-      children = [...children].reverse();
-      list.innerHTML = '';
-      children.forEach(function (result) {
-        list.innerHTML += result.outerHTML;
-      })
+      this.jsonData.results.reverse()
     },
   }
 })

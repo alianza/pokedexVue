@@ -45,13 +45,7 @@ export default Vue.extend( {
       this.$emit('clickedTypeItem', type)
     },
     sort() {
-      let list = document.getElementsByClassName('types-list')[0]
-      let children = list.children;
-      children = [...children].reverse();
-      list.innerHTML = '';
-      children.forEach(function (result) {
-        list.innerHTML += result.outerHTML;
-      })
+      this.jsonData.results.reverse()
     },
   }
 })
