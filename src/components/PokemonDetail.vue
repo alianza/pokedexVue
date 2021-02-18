@@ -321,10 +321,6 @@ export default Vue.extend({
   }
 }
 
-@media only screen and (max-width: 600px) {
-
-}
-
 @media only screen and (min-width: 1200px) {
   .details {
     width: 50%;

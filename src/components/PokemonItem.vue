@@ -5,7 +5,7 @@
     </div>
 </template>
 
-<script >
+<script>
 import Vue from 'vue'
 import PokemonService from "../helpers/services/PokémonService";
 

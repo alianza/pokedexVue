@@ -12,7 +12,7 @@
   </div>
 </template>
 
-<script >
+<script>
 import Vue from "vue";
 import TypeItem from "./TypeItem.vue";
 import Loader from "@/helpers/Loader";

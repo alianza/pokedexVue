@@ -10,14 +10,11 @@
       </li>
     </ul>
 
-    <button class="button button-prev" v-if="jsonData.previous" v-on:click="loadPrevPage()">Previous page</button>
-    <button class="button button-next" v-if="jsonData.next" v-on:click="loadNextPage()">Next page</button>
-
     <h2 v-if="!jsonData.results.length">No results :(</h2>
   </div>
 </template>
 
-<script >
+<script>
 import Vue from "vue";
 import PokemonItem from "../PokemonItem.vue";
 import PokémonService from "@/helpers/services/PokémonService";

@@ -17,7 +17,7 @@
   </div>
 </template>
 
-<script >
+<script>
 import Vue from "vue";
 import PokemonItem from "../PokemonItem.vue";
 import PokémonService from "@/helpers/services/PokémonService";
