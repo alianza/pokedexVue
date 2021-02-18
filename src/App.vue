@@ -45,7 +45,6 @@ export default Vue.extend({
   },
   data() {
     return {
-      jsonData: [],
       title: "PokéDex",
       windowWidth: window.innerWidth,
       detailPokemon: Object,
@@ -69,15 +68,13 @@ export default Vue.extend({
     },
     onMenuItemClick(item, elem) {
       switch (item) {
-        case 'home': { this.jsonData = []; this.setActiveMenuItem(elem); break }
-        case 'types': { this.loadTypes(); this.setActiveMenuItem(elem); break }
+        case 'home': { this.setActiveMenuItem(elem); break }
+        case 'types': { this.setActiveMenuItem(elem); break }
         case 'random': { this.loadRandomPokemon(); break }
         case 'about': { this.about(); break } }
     },
-    onDetailTypeClick(type) { // When clicked on type in detail page
-      this.jsonData = []
-      this.loadTypePokemons(type)
-      this.closePokemonDetails()
+    onDetailTypeClick() { // When clicked on type in detail page
+      this.closePokemonDetails();
     },
     setActiveMenuItem(elem) {
       document.getElementsByClassName('active')[0].classList.remove('active');
@@ -99,7 +96,6 @@ export default Vue.extend({
     },
     loadRandomPokemon() {
       Loader.showLoader()
-
       PokémonService.getRandomPokémon().then(jsonData => {
         this.openPokemonDetails(jsonData, true)
         this.randomDetailIsOpen = true

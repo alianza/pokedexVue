@@ -24,9 +24,9 @@
         </div>
         <div class="details-info-types">
           <h2>Types</h2>
-          <div class="details-info-types-type" v-on:click="onTypeClick(type.type)" v-bind:key="type.type.name" v-for="type in pokemon.types"
+          <router-link tag="div" :to="`/type/${type.type.name}`" class="details-info-types-type" v-on:click.native="onTypeClick" v-bind:key="type.type.name" v-for="type in pokemon.types"
                :style="{backgroundColor: $options.filters.typeToColor(type.type.name)}">{{ type.type.name | capitalize }}
-          </div>
+          </router-link>
         </div>
 
         <div class="details-info-stats">
@@ -49,7 +49,6 @@
             </div>
           </div>
         </div>
-<!--        <img alt="pokemon image" :src="image">-->
         <button v-if="!this.imageFront.includes('placeholder')" v-on:click="toggleImage()" class="button">↻</button>
       </div>
     </div>
@@ -76,8 +75,8 @@ export default Vue.extend({
   },
   watch: {
     pokemon() { // Listen for pokemon changes, update image and stats color
-      this.imageFront = (this.pokemon.sprites.front_default) ? this.pokemon.sprites.front_default : './placeholder.png'
-      this.imageBack = (this.pokemon.sprites.back_default) ? this.pokemon.sprites.back_default : './placeholder.png'
+      this.imageFront = (this.pokemon.sprites.front_default) ? this.pokemon.sprites.front_default : require('../assets/placeholder.png');
+      this.imageBack = (this.pokemon.sprites.back_default) ? this.pokemon.sprites.back_default : require('../assets/placeholder.png');
       setTimeout(() => {
         this.setStatsMainColor()
       }, 0)

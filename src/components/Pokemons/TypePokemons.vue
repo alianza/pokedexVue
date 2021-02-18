@@ -22,6 +22,7 @@ import Vue from "vue";
 import PokemonItem from "../PokemonItem.vue";
 import PokémonService from "@/helpers/services/PokémonService";
 import Loader from "@/helpers/Loader";
+import scrollToTop from "@/helpers/ScrollToTop";
 
 export default Vue.extend( {
   name: 'TypePokemons',
@@ -36,6 +37,12 @@ export default Vue.extend( {
         results: {}
       },
       page: 1,
+    }
+  },
+  watch:{
+    $route (){
+      this.loadTypePokémons(this.$route.params.type);
+      scrollToTop();
     }
   },
   mounted() {
