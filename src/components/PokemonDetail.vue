@@ -1,13 +1,13 @@
 <template>
   <div>
-    <div v-on:click="closeDialog()" class="backdrop"></div>
+    <div v-on:click="$router.back();" class="backdrop"></div>
 
     <div class="details">
-      <div v-on:click="closeDialog()" class="details-close">✖</div>
+      <div v-on:click="$router.back();" class="details-close">✖</div>
 
       <div class="details-container">
 
-      <div class="details-info">
+      <div class="details-info" v-if="this.pokemon">
         <h1 class="details-info-name">{{ pokemon.name | capitalize }}</h1>
         <div class="details-info-profile">
           <h2>Profile</h2>
@@ -24,7 +24,7 @@
         </div>
         <div class="details-info-types">
           <h2>Types</h2>
-          <router-link tag="div" :to="`/type/${type.type.name}`" class="details-info-types-type" v-on:click.native="onTypeClick" v-bind:key="type.type.name" v-for="type in pokemon.types"
+          <router-link tag="div" :to="`/type/${type.type.name}`" class="details-info-types-type" v-on:click="$router.push(`/type/${type.type.name}`);" v-bind:key="type.type.name" v-for="type in pokemon.types"
                :style="{backgroundColor: $options.filters.typeToColor(type.type.name)}">{{ type.type.name | capitalize }}
           </router-link>
         </div>
@@ -42,14 +42,14 @@
         <div class="flip-box">
           <div class="flip-box-inner">
             <div class="flip-box-front">
-              <img alt="Pokemon image front" :src="imageFront">
+              <img alt="Pokemon image front" v-if="this.pokemon.sprites" :src="this.pokemon.sprites.front_default || require('../assets/placeholder.png')">
             </div>
             <div class="flip-box-back">
-              <img alt="Pokemon image back" :src="imageBack">
+              <img alt="Pokemon image back" v-if="this.pokemon.sprites" :src="this.pokemon.sprites.back_default || require('../assets/placeholder.png')">
             </div>
           </div>
         </div>
-        <button v-if="!this.imageFront.includes('placeholder')" v-on:click="toggleImage()" class="button">↻</button>
+        <button v-if="!this.pokemon.back_default" v-on:click="toggleImage" class="button">↻</button>
       </div>
     </div>
     </div>
@@ -58,45 +58,37 @@
 
 <script>
 import Vue from 'vue'
+import PokemonService from "@/helpers/services/PokémonService";
+import Loader from "@/helpers/Loader";
 
 export default Vue.extend({
   name: "PokemonDetail",
-  props: {
-    pokemon: Object,
-  },
   data() {
-    return { // If no sprites set placeholder
-      imageFront: (this.pokemon.sprites.front_default) ? this.pokemon.sprites.front_default : require('../assets/placeholder.png'),
-      imageBack: (this.pokemon.sprites.back_default) ? this.pokemon.sprites.back_default : require('../assets/placeholder.png'),
+    return {
+      pokemon: Object,
     }
   },
   mounted() {
-    this.setStatsMainColor()
-  },
-  watch: {
-    pokemon() { // Listen for pokemon changes, update image and stats color
-      this.imageFront = (this.pokemon.sprites.front_default) ? this.pokemon.sprites.front_default : require('../assets/placeholder.png');
-      this.imageBack = (this.pokemon.sprites.back_default) ? this.pokemon.sprites.back_default : require('../assets/placeholder.png');
-      setTimeout(() => {
-        this.setStatsMainColor()
-      }, 0)
-    }
+    this.loadPokémon(this.$route.params.pokemonName);
   },
   methods: {
-    closeDialog() {
-      this.$emit('closeDialog');
+    loadPokémon(pokémonName) {
+      Loader.showLoader();
+      PokemonService.getPokémon(pokémonName).then(jsonData => {
+        this.pokemon = jsonData;
+        setTimeout(() => {
+          this.setStatsMainColor();
+          Loader.hideLoader();
+        }, 0)});
     },
     setStatsMainColor() {
-      const mainColor = document.getElementsByClassName('details-info-types-type')[0].style.backgroundColor
+      const mainColor = document.getElementsByClassName('details-info-types-type')[0].style.backgroundColor;
       for (let stat of document.getElementsByClassName('details-info-stats-stat')) {
-        stat.children[0].style.backgroundColor = mainColor
+        stat.children[0].style.backgroundColor = mainColor;
       }
     },
     toggleImage() {
-      document.getElementsByClassName('flip-box')[0].classList.toggle('active')
-    },
-    onTypeClick(type) {
-      this.$emit('onDetailTypeClick', type)
+      document.getElementsByClassName('flip-box')[0].classList.toggle('active');
     },
   }
 })
