@@ -7,7 +7,7 @@
 
     <div class="content">
 
-      <router-view @togglePokemonDetails="openPokemonDetails"></router-view>
+      <router-view></router-view>
 
     </div>
 
@@ -17,18 +17,16 @@
       <div></div>
     </div>
 
-    <div class="button button-random" v-on:click="loadRandomPokemon" v-if="randomDetailIsOpen && detailIsOpen">Next →</div>
+<!--    <div class="button button-random" v-on:click="loadRandomPokemon">Next →</div> TODO: Add to details component -->
 
     <transition name="fade">
-      <pokemon-detail @closeDialog="closePokemonDetails" @onDetailTypeClick="onDetailTypeClick"
-                      v-if="detailIsOpen" :pokemon="detailPokemon"></pokemon-detail>
+      <router-view name="detail"></router-view>
     </transition>
   </div>
 </template>
 
 <script>
 import Vue from "vue";
-import PokemonDetail from "./components/PokemonDetail.vue";
 import PokeHeader from "./components/PokeHeader.vue";
 import PokeMenu from "./components/PokeMenu.vue"
 import PokeFooter from "./components/PokeFooter.vue";
@@ -41,40 +39,23 @@ export default Vue.extend({
     PokeHeader,
     PokeMenu,
     PokeFooter,
-    PokemonDetail,
   },
   data() {
     return {
       title: "PokéDex",
       windowWidth: window.innerWidth,
-      detailPokemon: Object,
-      detailIsOpen: false,
-      randomDetailIsOpen: false,
-      showPokémons: true,
     }
   },
   mounted() {
     this.setWindowListener();
   },
   methods: {
-    openPokemonDetails(pokemon, showNextButton) {
-      this.detailPokemon = pokemon
-      this.detailIsOpen = true
-      this.randomDetailIsOpen = showNextButton
-    },
-    closePokemonDetails() {
-      this.detailIsOpen = false
-      this.randomDetailIsOpen = false
-    },
     onMenuItemClick(item, elem) {
       switch (item) {
         case 'home': { this.setActiveMenuItem(elem); break }
         case 'types': { this.setActiveMenuItem(elem); break }
         case 'random': { this.loadRandomPokemon(); break }
         case 'about': { this.about(); break } }
-    },
-    onDetailTypeClick() { // When clicked on type in detail page
-      this.closePokemonDetails();
     },
     setActiveMenuItem(elem) {
       document.getElementsByClassName('active')[0].classList.remove('active');
@@ -94,12 +75,11 @@ export default Vue.extend({
         document.getElementById('app').classList.add('menu-active')
       }
     },
-    loadRandomPokemon() {
+    loadRandomPokemon() { // TODO move to details component
       Loader.showLoader()
       PokémonService.getRandomPokémon().then(jsonData => {
-        this.openPokemonDetails(jsonData, true)
-        this.randomDetailIsOpen = true
-        Loader.hideLoader()
+        // this.openPokemonDetails(jsonData, true);
+        Loader.hideLoader();
       });
     },
     about() {
