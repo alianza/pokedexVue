@@ -16,7 +16,7 @@
 import Vue from "vue";
 import TypeItem from "./TypeItem.vue";
 import Loader from "@/helpers/Loader";
-import PokémonService from "@/helpers/services/PokémonService";
+import PokemonService from "@/helpers/services/PokemonService";
 
 export default Vue.extend( {
   name: 'types',
@@ -36,7 +36,7 @@ export default Vue.extend( {
   methods: {
     loadTypes() { // Load all pokemon types
       Loader.showLoader()
-      PokémonService.getTypes().then(jsonData => {
+      PokemonService.getTypes().then(jsonData => {
         this.jsonData = jsonData
         Loader.hideLoader()
       });
