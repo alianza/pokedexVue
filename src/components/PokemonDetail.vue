@@ -24,7 +24,7 @@
         </div>
         <div class="details-info-types">
           <h2>Types</h2>
-          <router-link tag="div" :to="`/type/${type.type.name}`" class="details-info-types-type" v-on:click="$router.push(`/type/${type.type.name}`);" v-bind:key="type.type.name" v-for="type in pokemon.types"
+          <router-link tag="div" :to="`/types/${type.type.name}`" class="details-info-types-type" v-on:click="$router.push(`/type/${type.type.name}`);" v-bind:key="type.type.name" v-for="type in pokemon.types"
                :style="{backgroundColor: $options.filters.typeToColor(type.type.name)}">{{ type.type.name | capitalize }}
           </router-link>
         </div>

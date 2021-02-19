@@ -6,7 +6,7 @@
     </div>
     <ul class="pokemons-list">
       <li v-bind:key="pokemon.name" v-for="pokemon in jsonData.results" class="pokemons-item">
-        <router-link :to="{ name: 'AllPokemonDetail', params: { pokemonName: pokemon.name } }"><pokemon-item @init="loaded" :pokemonRef="pokemon"></pokemon-item></router-link>
+        <router-link :to="{ name: 'allpokemondetail', params: { pokemonName: pokemon.name } }"><pokemon-item @init="loaded" :pokemonRef="pokemon"></pokemon-item></router-link>
       </li>
     </ul>
 

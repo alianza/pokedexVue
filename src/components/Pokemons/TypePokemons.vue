@@ -6,7 +6,7 @@
     </div>
     <ul class="pokemons-list">
       <li v-bind:key="pokemon.name" v-for="pokemon in jsonData.results" class="pokemons-item">
-        <router-link :to="{ name: 'TypePokemonDetail', params: { type: $route.params.type, pokemonName: pokemon.name } }"><pokemon-item @init="loaded" @clickedPokemon="onPokemonClick" :pokemonRef="pokemon"></pokemon-item></router-link>
+        <router-link :to="{ name: 'typespokemondetail', params: { type: $route.params.type, pokemonName: pokemon.name } }"><pokemon-item @init="loaded" @clickedPokemon="onPokemonClick" :pokemonRef="pokemon"></pokemon-item></router-link>
       </li>
     </ul>
 
@@ -38,7 +38,7 @@ export default Vue.extend( {
   },
   watch:{
     $route (to, from){
-      if ((to.name === "TypePokemonDetail" || from.name === "TypePokemonDetail") && to.params.type === from.params.type) { return } // Don't refresh data when going to or coming from details page and type hasn't changed
+      if ((to.name === "typespokemondetail" || from.name === "typespokemondetail") && to.params.type === from.params.type) { return } // Don't refresh data when going to or coming from details page and type hasn't changed
       this.loadTypePokémons(this.$route.params.type);
       scrollToTop();
     }
