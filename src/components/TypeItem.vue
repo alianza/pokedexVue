@@ -1,5 +1,5 @@
 <template>
-    <div class="type" v-on:click="onTypeClick(type)">
+    <div class="type">
       <div class="type-container" :style="{backgroundColor: $options.filters.typeToColor(type.name)}">
         <h3 class="type-name">{{ type.name | capitalize}}</h3>
       </div>
@@ -14,11 +14,6 @@ export default Vue.extend({
   props: {
     type: Object,
   },
-  methods: {
-    onTypeClick(type) {
-      this.$emit('clickedType', type)
-    },
-  }
 })
 </script>
 
