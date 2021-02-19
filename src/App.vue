@@ -133,69 +133,6 @@ a {
     }
   }
 
-  & .menu {
-    position: fixed;
-    width: 11em;
-    padding: 1em;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-    top: 0;
-    background-color: white;
-    height: 100%;
-    transition: transform .5s;
-    transform: translateX(-13em);
-
-    & h1 {
-      margin-top: .5em;
-    }
-
-    &-close {
-      display: none;
-      cursor: pointer;
-      transition: transform .1s;
-
-      &:hover {
-        transform: scale(1.2);
-      }
-
-      &:active {
-        transform: scale(.98);
-      }
-    }
-
-    &-top {
-
-    }
-
-    &-bottom {
-      bottom: 2em;
-      position: absolute;
-    }
-
-    & ul {
-      list-style-type: none;
-      padding: 0;
-
-      & li {
-        list-style: none;
-        margin: 1em;
-        transition: transform .2s;
-        cursor: pointer;
-
-        &.active {
-          font-weight: bold;
-        }
-
-        &:hover {
-          transform: scale(1.1);
-        }
-
-        &:active {
-          transform: scale(.98);
-        }
-      }
-    }
-  }
-
   & .content {
     margin-top: 3em;
     transition: margin-left .5s;
@@ -283,13 +220,6 @@ a {
 
 @media only screen and (max-width: 400px) {
   #app {
-
-    & .menu {
-
-      &-close {
-        display: inline-block;
-      }
-    }
 
     &.menu-active {
 
