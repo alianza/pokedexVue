@@ -47,20 +47,21 @@ export default Vue.extend({
   },
   mounted() {
     this.setWindowListener();
+    this.onResize();
   },
   methods: {
     toggleMenu() {
-      document.getElementById('app').classList.toggle('menu-active')
+      document.getElementById('app').classList.toggle('menu-active');
     },
     setWindowListener() { // Listener for window size
-      this.$nextTick(() => { window.addEventListener('resize', this.onResize) })
+      this.$nextTick(() => { window.addEventListener('resize', this.onResize) });
     },
     onResize() { // Callback for window resize event
-      this.windowWidth = window.innerWidth
+      this.windowWidth = window.innerWidth;
       if (this.windowWidth < 600) {
-        document.getElementById('app').classList.remove('menu-active')
+        document.getElementById('app').classList.remove('menu-active');
       } else if (this.windowWidth > 900) {
-        document.getElementById('app').classList.add('menu-active')
+        document.getElementById('app').classList.add('menu-active');
       }
     },
   }
