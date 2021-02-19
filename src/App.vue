@@ -3,11 +3,13 @@
 
     <PokeHeader @clickedMenuIcon="toggleMenu" :title="title"></PokeHeader>
 
-    <PokeMenu @clickedMenuIcon="toggleMenu" @onMenuItemClick="onMenuItemClick"></PokeMenu>
+    <PokeMenu @clickedMenuIcon="toggleMenu"></PokeMenu>
 
     <div class="content">
 
-      <router-view></router-view>
+      <transition name="fade" mode="out-in">
+       <router-view></router-view>
+      </transition>
 
     </div>
 
@@ -17,11 +19,10 @@
       <div></div>
     </div>
 
-<!--    <div class="button button-random" v-on:click="loadRandomPokemon">Next →</div> TODO: Add to details component -->
-
-    <transition name="fade">
+    <transition name="fade" mode="out-in">
       <router-view name="detail"></router-view>
     </transition>
+
   </div>
 </template>
 
@@ -30,8 +31,6 @@ import Vue from "vue";
 import PokeHeader from "./components/PokeHeader.vue";
 import PokeMenu from "./components/PokeMenu.vue"
 import PokeFooter from "./components/PokeFooter.vue";
-import PokémonService from "./helpers/services/PokémonService";
-import Loader from "@/helpers/Loader";
 
 export default Vue.extend({
   name: 'App',
@@ -50,17 +49,6 @@ export default Vue.extend({
     this.setWindowListener();
   },
   methods: {
-    onMenuItemClick(item, elem) {
-      switch (item) {
-        case 'home': { this.setActiveMenuItem(elem); break }
-        case 'types': { this.setActiveMenuItem(elem); break }
-        case 'random': { this.loadRandomPokemon(); break }
-        case 'about': { this.about(); break } }
-    },
-    setActiveMenuItem(elem) {
-      document.getElementsByClassName('active')[0].classList.remove('active');
-      elem.classList.add('active');
-    },
     toggleMenu() {
       document.getElementById('app').classList.toggle('menu-active')
     },
@@ -74,18 +62,6 @@ export default Vue.extend({
       } else if (this.windowWidth > 900) {
         document.getElementById('app').classList.add('menu-active')
       }
-    },
-    loadRandomPokemon() { // TODO move to details component
-      Loader.showLoader()
-      PokémonService.getRandomPokémon().then(jsonData => {
-        // this.openPokemonDetails(jsonData, true);
-        Loader.hideLoader();
-      });
-    },
-    about() {
-      alert('This is a Web PokéDex Application!\n' +
-          'Discover countless Pokemon and their info!\n' +
-          'Made by Jan-Willem van Bremen - 2020')
     },
   }
 })
@@ -254,5 +230,13 @@ a {
   100% {
     transform: rotate(360deg);
   }
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
 }
 </style>

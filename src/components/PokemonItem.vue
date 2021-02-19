@@ -1,5 +1,5 @@
 <template>
-    <div v-if="isLoaded" v-on:click="onPokemonClick(pokemon)" class="pokemon" :style="[pokemon.sprites.front_default ? {backgroundImage: 'url(' + pokemon.sprites.front_default + ')'} : {backgroundImage: 'url(' + require('../assets/placeholder.png') + ')', backgroundSize: '50%', backgroundPosition: 'center'}]">
+    <div v-if="isLoaded && pokemon.sprites" class="pokemon" :style="[pokemon.sprites.front_default ? {backgroundImage: 'url(' + pokemon.sprites.front_default + ')'} : {backgroundImage: 'url(' + require('../assets/placeholder.png') + ')', backgroundSize: '50%', backgroundPosition: 'center'}]">
       <h3 class="pokemon-name">{{ pokemon.name | capitalize}}</h3>
       <p class="pokemon-type" :style="{backgroundColor: $options.filters.typeToColor(pokemon.types[0].type.name)}">{{ pokemon.types[0].type.name | capitalize }}</p>
     </div>
@@ -7,7 +7,7 @@
 
 <script>
 import Vue from 'vue'
-import PokemonService from "../helpers/services/PokémonService";
+import PokemonService from "../helpers/services/PokemonService";
 
 export default Vue.extend({
   name: 'pokemonItem',
@@ -21,7 +21,7 @@ export default Vue.extend({
     }
   },
   mounted() {
-    this.loadPokemon()
+    this.loadPokemon();
   },
   methods: {
     loadPokemon() {
@@ -30,9 +30,6 @@ export default Vue.extend({
         this.isLoaded = true;
         this.$emit('init');
       });
-    },
-    onPokemonClick(pokemon) {
-      this.$emit('clickedPokemon', pokemon);
     },
   }
 })

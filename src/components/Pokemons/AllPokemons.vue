@@ -20,7 +20,7 @@
 <script>
 import Vue from "vue";
 import PokemonItem from "../PokemonItem.vue";
-import PokémonService from "@/helpers/services/PokémonService";
+import PokemonService from "@/helpers/services/PokemonService";
 import Loader from "@/helpers/Loader";
 import scrollToTop from "@/helpers/ScrollToTop";
 
@@ -42,42 +42,39 @@ export default Vue.extend( {
   mounted() {
     if (this.$route.params.page) {
       const currentPage = parseInt(this.$route.params.page);
-      const offset = (currentPage - 1) * PokémonService.basePageLimit;
+      const offset = (currentPage - 1) * PokemonService.basePageLimit;
       this.page = currentPage;
-      this.loadPagedPokémons(offset);
+      this.loadPagedPokemons(offset);
     } else {
-      this.loadPokémons();
+      this.loadPokemons();
     }
   },
   methods: {
-    loadPokémons() {
+    loadPokemons() {
       Loader.showLoader();
-      PokémonService.getPokémons().then(jsonData => {
+      PokemonService.getPokemons().then(jsonData => {
         this.jsonData = jsonData;
       });
     },
-    loadPagedPokémons(offset) {
+    loadPagedPokemons(offset) {
       Loader.showLoader();
-      PokémonService.getPagedPokémons(offset).then(json => {
+      PokemonService.getPagedPokemons(offset).then(json => {
         this.jsonData = json;
-        Loader.hideLoader();
       })
     },
     loadNextPage() {
       Loader.showLoader();
       this.page++;
-      PokémonService.doLoad(this.jsonData.next).then(json => {
+      PokemonService.doLoad(this.jsonData.next).then(json => {
         this.jsonData = json;
-        Loader.hideLoader();
         scrollToTop();
       });
     },
     loadPrevPage() {
       Loader.showLoader();
       this.page--;
-      PokémonService.doLoad(this.jsonData.previous).then(json => {
+      PokemonService.doLoad(this.jsonData.previous).then(json => {
         this.jsonData = json;
-        Loader.hideLoader();
         scrollToTop();
       });
     },
@@ -85,8 +82,8 @@ export default Vue.extend( {
       console.log('item loaded');
       this.loadedItems++; // Increase loadedItems until equal with jsondata.results.length
       if (this.loadedItems === this.jsonData.results.length) {
-        document.getElementById('loader').classList.remove('active');
-        this.loadedItems = 0;
+      Loader.hideLoader();
+      this.loadedItems = 0;
       }
     },
     sort() {

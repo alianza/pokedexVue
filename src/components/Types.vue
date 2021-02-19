@@ -6,7 +6,7 @@
     </div>
     <ul class="types-list">
       <li v-bind:key="type.name" v-for="type in jsonData.results" class="types-item">
-        <router-link :to="`/types/${type.name}`"><type-item @clickedType="clickedType" :type="type"></type-item></router-link>
+        <router-link :to="`/types/${type.name}`"><type-item :type="type"></type-item></router-link>
       </li>
     </ul>
   </div>
@@ -16,7 +16,7 @@
 import Vue from "vue";
 import TypeItem from "./TypeItem.vue";
 import Loader from "@/helpers/Loader";
-import PokémonService from "@/helpers/services/PokémonService";
+import PokemonService from "@/helpers/services/PokemonService";
 
 export default Vue.extend( {
   name: 'types',
@@ -36,13 +36,10 @@ export default Vue.extend( {
   methods: {
     loadTypes() { // Load all pokemon types
       Loader.showLoader();
-      PokémonService.getTypes().then(jsonData => {
+      PokemonService.getTypes().then(jsonData => {
         this.jsonData = jsonData;
         Loader.hideLoader();
       });
-    },
-    clickedType(type) {
-      this.$emit('clickedTypeItem', type);
     },
     sort() {
       this.jsonData.results.reverse();

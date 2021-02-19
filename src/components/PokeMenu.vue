@@ -3,10 +3,10 @@
     <div v-on:click="handleMenuIconClick" class="menu-close">✖</div>
     <h1>Menu</h1>
     <ul class="menu-top">
-      <router-link tag="li" to="/" :active-class="$route.path.includes('allpokemondetail') ? 'active' : ''">Home</router-link>
+      <router-link tag="li" to="/" :active-class="$route.path.includes('pokemon') && !$route.path.includes('type') ? 'active' : ''">Home</router-link>
       <router-link tag="li" to="/types" :active-class="$route.path.includes('type') ? 'active' : ''">Types</router-link>
       <router-link tag="li" to="/random">Random Pokémon</router-link>
-      <li v-on:click="handleMenuItemClick('about', $event.target);">About</li>
+      <li v-on:click="about">About</li>
     </ul>
     <p class="menu-bottom">Jan-Willem van Bremen</p>
   </div>
@@ -17,17 +17,15 @@ import Vue from "vue";
 
 export default Vue.extend({
   name: "PokeMenu",
-  updated() {
-    console.log(this.$route);
-    console.log(this.$route.path.includes('type'));
-  },
   methods: {
     handleMenuIconClick() {
       this.$emit('clickedMenuIcon');
     },
-    handleMenuItemClick(item, event) {
-      this.$emit('onMenuItemClick', item, event);
-    }
+    about() {
+      alert('This is a Web PokéDex Application!\n' +
+          'Discover countless Pokemon and their info!\n' +
+          'Made by Jan-Willem van Bremen - 2020')
+    },
   }
 })
 </script>
