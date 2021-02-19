@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <fragment>
     <div v-on:click="$router.back();" class="backdrop"></div>
 
     <div class="details">
@@ -53,12 +53,13 @@
       </div>
     </div>
     </div>
-  </div>
+    <div class="button button-random" v-if="this.$route.path === '/random'" v-on:click="loadRandomPokemon">Next →</div>
+  </fragment>
 </template>
 
 <script>
 import Vue from 'vue'
-import PokemonService from "@/helpers/services/PokémonService";
+import PokemonService from "@/helpers/services/PokemonService";
 import Loader from "@/helpers/Loader";
 
 export default Vue.extend({
@@ -69,18 +70,28 @@ export default Vue.extend({
     }
   },
   mounted() {
-    this.loadPokémon(this.$route.params.pokemonName);
+    if (this.$route.path === "/random") { this.loadRandomPokemon(); }
+    else { this.loadPokemon(this.$route.params.pokemonName); }
   },
   methods: {
-    loadPokémon(pokémonName) {
+    loadPokemon(pokemonName) {
       Loader.showLoader();
-      PokemonService.getPokémon(pokémonName).then(jsonData => {
+      PokemonService.getPokemon(pokemonName).then(jsonData => {
         this.pokemon = jsonData;
         setTimeout(() => {
           this.setStatsMainColor();
           Loader.hideLoader();
         }, 0)});
     },
+    loadRandomPokemon() {
+      Loader.showLoader();
+      PokemonService.getRandomPokemon().then(jsonData => {
+        this.pokemon = jsonData;
+        setTimeout(() => {
+          this.setStatsMainColor();
+          Loader.hideLoader();
+        }, 0)});
+      },
     setStatsMainColor() {
       const mainColor = document.getElementsByClassName('details-info-types-type')[0].style.backgroundColor;
       for (let stat of document.getElementsByClassName('details-info-stats-stat')) {
@@ -90,7 +101,7 @@ export default Vue.extend({
     toggleImage() {
       document.getElementsByClassName('flip-box')[0].classList.toggle('active');
     },
-  }
+  },
 })
 </script>
 
@@ -325,14 +336,5 @@ export default Vue.extend({
   .details {
     width: 50%;
   }
-}
-
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .5s;
-}
-
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */
-{
-  opacity: 0;
 }
 </style>
