@@ -1,7 +1,7 @@
 <template>
   <div class="pokemons">
     <div class="pokemons-header">
-      <h1>Pick a creature</h1>
+      <h1>Pick a creature!</h1>
       <div class="button button-sort" v-on:click="sort">Sort ⇕</div>
     </div>
     <ul class="pokemons-list">
