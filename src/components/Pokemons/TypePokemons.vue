@@ -17,7 +17,7 @@
 <script>
 import Vue from "vue";
 import PokemonItem from "../PokemonItem.vue";
-import PokémonService from "@/helpers/services/PokémonService";
+import PokemonService from "@/helpers/services/PokemonService";
 import Loader from "@/helpers/Loader";
 import scrollToTop from "@/helpers/ScrollToTop";
 
@@ -39,30 +39,29 @@ export default Vue.extend( {
   watch:{
     $route (to, from){
       if ((to.name === "typespokemondetail" || from.name === "typespokemondetail") && to.params.type === from.params.type) { return } // Don't refresh data when going to or coming from details page and type hasn't changed
-      this.loadTypePokémons(this.$route.params.type);
+      this.loadTypePokemons(this.$route.params.type);
       scrollToTop();
     }
   },
   mounted() {
-    this.loadTypePokémons(this.$route.params.type);
+    this.loadTypePokemons(this.$route.params.type);
   },
   methods: {
     onPokemonClick(pokemon) {
       this.$emit('togglePokemonDetails', pokemon)
     },
-    loadTypePokémons(type) {
+    loadTypePokemons(type) {
       Loader.showLoader();
-      PokémonService.getTypePokémons(type).then(json => {
+      PokemonService.getTypePokemons(type).then(json => {
         this.jsonData = json;
-        Loader.hideLoader();
       });
     },
     loaded() { // Emitted method by children when loaded content
-      console.log('item loaded')
+      console.log('item loaded');
       this.loadedItems++ // Increase loadedItems until equal with jsondata.results.length
       if (this.loadedItems === this.jsonData.results.length) {
-        document.getElementById('loader').classList.remove('active');
-        this.loadedItems = 0
+      Loader.hideLoader();
+      this.loadedItems = 0;
       }
     },
     sort() {
