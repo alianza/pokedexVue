@@ -16,7 +16,7 @@ export default Vue.extend({
   },
   methods: {
     onTypeClick(type) {
-      this.$emit('clickedType', type)
+      this.$emit('clickedType', type);
     },
   }
 })

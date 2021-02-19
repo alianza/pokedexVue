@@ -58,15 +58,15 @@ export default Vue.extend( {
       });
     },
     loaded() { // Emitted method by children when loaded content
-      console.log('item loaded')
-      this.loadedItems++ // Increase loadedItems until equal with jsondata.results.length
+      console.log('item loaded');
+      this.loadedItems++; // Increase loadedItems until equal with jsondata.results.length
       if (this.loadedItems === this.jsonData.results.length) {
         document.getElementById('loader').classList.remove('active');
         this.loadedItems = 0
       }
     },
     sort() {
-      this.jsonData.results.reverse()
+      this.jsonData.results.reverse();
     },
   }
 })

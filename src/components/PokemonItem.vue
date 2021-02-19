@@ -26,13 +26,13 @@ export default Vue.extend({
   methods: {
     loadPokemon() {
       PokemonService.doLoad(this.pokemonRef.url).then(jsonData => {
-        this.pokemon = jsonData
-        this.isLoaded = true
-        this.$emit('init')
+        this.pokemon = jsonData;
+        this.isLoaded = true;
+        this.$emit('init');
       });
     },
     onPokemonClick(pokemon) {
-      this.$emit('clickedPokemon', pokemon)
+      this.$emit('clickedPokemon', pokemon);
     },
   }
 })

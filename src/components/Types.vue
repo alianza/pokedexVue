@@ -35,17 +35,17 @@ export default Vue.extend( {
   },
   methods: {
     loadTypes() { // Load all pokemon types
-      Loader.showLoader()
+      Loader.showLoader();
       PokémonService.getTypes().then(jsonData => {
-        this.jsonData = jsonData
-        Loader.hideLoader()
+        this.jsonData = jsonData;
+        Loader.hideLoader();
       });
     },
     clickedType(type) {
-      this.$emit('clickedTypeItem', type)
+      this.$emit('clickedTypeItem', type);
     },
     sort() {
-      this.jsonData.results.reverse()
+      this.jsonData.results.reverse();
     },
   }
 })
