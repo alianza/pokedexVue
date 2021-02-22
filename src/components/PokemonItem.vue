@@ -21,6 +21,7 @@ export default Vue.extend({
     }
   },
   mounted() {
+    this.$emit('init');
     this.loadPokemon();
   },
   methods: {
@@ -28,7 +29,7 @@ export default Vue.extend({
       PokemonService.getPokemon(this.pokemonRef.name).then(jsonData => {
         this.pokemon = jsonData;
         this.isLoaded = true;
-        this.$emit('init');
+        this.$emit('loaded');
       });
     },
   }
