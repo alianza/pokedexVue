@@ -6,7 +6,8 @@
     </div>
     <ul class="pokemons-list">
       <li v-bind:key="pokemon.name" v-for="pokemon in jsonData.results" class="pokemons-item">
-        <router-link :to="{ name: 'allpokemondetail', params: { pokemonName: pokemon.name } }"><pokemon-item @init="loaded" :pokemonRef="pokemon"></pokemon-item></router-link>
+        <router-link :to="{ name: 'allpokemondetail', params: { pokemonName: pokemon.name } }">
+          <pokemon-item @loaded="itemLoaded" @init="++itemsToLoad" :pokemonRef="pokemon"></pokemon-item></router-link>
       </li>
     </ul>
 
@@ -31,7 +32,7 @@ export default Vue.extend( {
   },
   data() {
     return {
-      detailPokemon: Object,
+      itemsToLoad: 0,
       loadedItems: 0,
       jsonData: {
         results: { }
@@ -64,7 +65,7 @@ export default Vue.extend( {
     },
     loadNextPage() {
       Loader.showLoader();
-      this.page++;
+      ++this.page;
       PokemonService.doLoad(this.jsonData.next).then(json => {
         this.jsonData = json;
         scrollToTop();
@@ -72,18 +73,18 @@ export default Vue.extend( {
     },
     loadPrevPage() {
       Loader.showLoader();
-      this.page--;
+      --this.page;
       PokemonService.doLoad(this.jsonData.previous).then(json => {
         this.jsonData = json;
         scrollToTop();
       });
     },
-    loaded() { // Emitted method by children when loaded content
+    itemLoaded() { // Emitted method by children when loaded content
       console.log('item loaded');
-      this.loadedItems++; // Increase loadedItems until equal with jsondata.results.length
-      if (this.loadedItems === this.jsonData.results.length) {
-      Loader.hideLoader();
-      this.loadedItems = 0;
+      ++this.loadedItems; // Increase loadedItems until equal with jsondata.results.length
+      if (this.loadedItems === this.itemsToLoad) {
+        Loader.hideLoader();
+        this.loadedItems = this.itemsToLoad = 0;
       }
     },
     sort() {
