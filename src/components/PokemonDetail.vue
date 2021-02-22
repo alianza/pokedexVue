@@ -24,7 +24,8 @@
         </div>
         <div class="details-info-types">
           <h2>Types</h2>
-          <router-link tag="div" :to="`/types/${type.type.name}`" class="details-info-types-type" v-on:click="$router.push(`/type/${type.type.name}`);" v-bind:key="type.type.name" v-for="type in pokemon.types"
+          <router-link tag="div" :to="`/types/${type.type.name}`" class="details-info-types-type"
+                       v-on:click="$router.push(`/type/${type.type.name}`);" v-bind:key="type.type.name" v-for="type in pokemon.types"
                :style="{backgroundColor: $options.filters.typeToColor(type.type.name)}">{{ type.type.name | capitalize }}
           </router-link>
         </div>
@@ -70,8 +71,12 @@ export default Vue.extend({
     }
   },
   mounted() {
+    document.body.addEventListener('keydown', this.handleKeyDown);
     if (this.$route.path === "/random") { this.loadRandomPokemon(); }
     else { this.loadPokemon(this.$route.params.pokemonName); }
+  },
+  destroyed() {
+    document.body.removeEventListener('keydown', this.handleKeyDown);
   },
   methods: {
     loadPokemon(pokemonName) {
@@ -93,7 +98,7 @@ export default Vue.extend({
         }, 0)});
       },
     setStatsMainColor() {
-      const mainColor = document.getElementsByClassName('details-info-types-type')[0].style.backgroundColor;
+      const mainColor = this.$options.filters.typeToColor(this.pokemon.types[0].type.name);
       for (let stat of document.getElementsByClassName('details-info-stats-stat')) {
         stat.children[0].style.backgroundColor = mainColor;
       }
@@ -101,6 +106,9 @@ export default Vue.extend({
     toggleImage() {
       document.getElementsByClassName('flip-box')[0].classList.toggle('active');
     },
+    handleKeyDown(e) {
+      if (e.key === "Escape") { this.$router.back(); }
+    }
   },
 })
 </script>
