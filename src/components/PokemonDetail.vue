@@ -43,10 +43,10 @@
         <div class="flip-box">
           <div class="flip-box-inner">
             <div class="flip-box-front">
-              <img alt="Pokemon image front" v-if="this.pokemon.sprites" :src="this.pokemon.sprites.front_default || require('../assets/placeholder.png')">
+              <img alt="Pokemon image front" v-if="this.pokemon.sprites" :src="this.pokemon.sprites.front_default || require('@/assets/placeholder.png')">
             </div>
             <div class="flip-box-back">
-              <img alt="Pokemon image back" v-if="this.pokemon.sprites" :src="this.pokemon.sprites.back_default || require('../assets/placeholder.png')">
+              <img alt="Pokemon image back" v-if="this.pokemon.sprites" :src="this.pokemon.sprites.back_default || require('@/assets/placeholder.png')">
             </div>
           </div>
         </div>
