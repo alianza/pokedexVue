@@ -111,7 +111,7 @@ a {
   & .content {
     margin-top: 3em;
     transition: margin-left .5s;
-    padding: 1em 1em 12em;
+    padding: 1em 1em 11em;
   }
 
   & .button {
