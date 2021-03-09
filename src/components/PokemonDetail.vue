@@ -1,5 +1,5 @@
 <template>
-  <fragment>
+  <div>
     <div v-on:click="$router.back();" class="backdrop"></div>
 
     <div class="details">
@@ -55,7 +55,7 @@
     </div>
     </div>
     <div class="button button-random" v-if="this.$route.path === '/random'" v-on:click="loadRandomPokemon">Next →</div>
-  </fragment>
+  </div>
 </template>
 
 <script>
