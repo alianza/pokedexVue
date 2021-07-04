@@ -53,13 +53,13 @@ export default Vue.extend( {
   methods: {
     loadPokémons() {
       Loader.showLoader();
-      PokémonService.getPokemons().then(jsonData => {
+      PokémonService.getPokémons().then(jsonData => {
         this.jsonData = jsonData;
       });
     },
     loadPagedPokémons(offset) {
       Loader.showLoader();
-      PokémonService.getPagedPokemons(offset).then(json => {
+      PokémonService.getPagedPokémons(offset).then(json => {
         this.jsonData = json;
       })
     },

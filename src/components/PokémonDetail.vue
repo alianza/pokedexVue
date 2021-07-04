@@ -92,7 +92,7 @@ export default Vue.extend({
     },
     loadRandomPokemon() {
       Loader.showLoader();
-      PokémonService.getRandomPokemon().then(jsonData => {
+      PokémonService.getRandomPokémon().then(jsonData => {
         this.pokemon = jsonData;
         setTimeout(() => {
           this.setStatsMainColor();

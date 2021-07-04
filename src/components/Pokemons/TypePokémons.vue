@@ -50,7 +50,7 @@ export default Vue.extend( {
   methods: {
     loadTypePokémons(type) {
       Loader.showLoader();
-      PokémonService.getTypePokemons(type).then(json => {
+      PokémonService.getTypePokémons(type).then(json => {
         this.jsonData = json;
       });
     },
