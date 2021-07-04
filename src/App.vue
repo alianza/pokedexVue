@@ -26,9 +26,9 @@
 
 <script>
 import Vue from "vue";
-import PokeHeader from "./components/PokeHeader.vue";
-import PokeMenu from "./components/PokeMenu.vue"
-import PokeFooter from "./components/PokeFooter.vue";
+import PokeHeader from "./components/PokéHeader.vue";
+import PokeMenu from "./components/PokéMenu.vue"
+import PokeFooter from "./components/PokéFooter.vue";
 
 export default Vue.extend({
   name: 'App',
@@ -72,6 +72,10 @@ body {
   padding: 0;
   margin: 0;
   overflow-x: hidden;
+
+  &.scroll_disabled {
+    overflow: hidden;
+  }
 }
 
 a {

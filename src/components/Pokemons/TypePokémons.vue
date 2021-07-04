@@ -1,13 +1,13 @@
 <template>
-  <div class="pokemons">
-    <div class="pokemons-header">
+  <div class="pokémons">
+    <div class="pokémons-header">
       <h1>{{ $route.params.type | capitalize }} type pokémons</h1>
       <div class="button button-sort" v-on:click="sort">Sort ⇕</div>
     </div>
-    <ul class="pokemons-list">
-      <li v-bind:key="pokemon.name" v-for="pokemon in jsonData.results" class="pokemons-item">
+    <ul class="pokémons-list">
+      <li v-bind:key="pokemon.name" v-for="pokemon in jsonData.results" class="pokémons-item">
         <router-link :to="{ name: 'typespokemondetail', params: { type: $route.params.type, pokemonName: pokemon.name } }">
-          <pokemon-item @loaded="itemLoaded" @init="++itemsToLoad" @clickedPokemon="onPokemonClick" :pokemonRef="pokemon"></pokemon-item></router-link>
+          <pokemon-item @loaded="itemLoaded" @init="++itemsToLoad" :pokemonRef="pokemon"></pokemon-item></router-link>
       </li>
     </ul>
 
@@ -17,13 +17,13 @@
 
 <script>
 import Vue from "vue";
-import PokemonItem from "../PokemonItem.vue";
-import PokemonService from "@/helpers/services/PokemonService";
+import PokemonItem from "../PokémonItem.vue";
+import PokémonService from "@/helpers/services/PokémonService";
 import Loader from "@/helpers/Loader";
 import scrollToTop from "@/helpers/ScrollToTop";
 
 export default Vue.extend( {
-  name: 'TypePokemons',
+  name: 'TypePokémons',
   components: {
     PokemonItem
   },
@@ -40,20 +40,17 @@ export default Vue.extend( {
   watch:{
     $route (to, from){
       if ((to.name === "typespokemondetail" || from.name === "typespokemondetail") && to.params.type === from.params.type) { return; } // Don't refresh data when going to or coming from details page and type hasn't changed
-      this.loadTypePokemons(this.$route.params.type);
+      this.loadTypePokémons(this.$route.params.type);
       scrollToTop();
     }
   },
   mounted() {
-    this.loadTypePokemons(this.$route.params.type);
+    this.loadTypePokémons(this.$route.params.type);
   },
   methods: {
-    onPokemonClick(pokemon) {
-      this.$emit('togglePokemonDetails', pokemon)
-    },
-    loadTypePokemons(type) {
+    loadTypePokémons(type) {
       Loader.showLoader();
-      PokemonService.getTypePokemons(type).then(json => {
+      PokémonService.getTypePokemons(type).then(json => {
         this.jsonData = json;
       });
     },
@@ -74,7 +71,7 @@ export default Vue.extend( {
 
 <style lang="scss" scoped>
 
-.pokemons {
+.pokémons {
 
   &-header {
 
@@ -117,7 +114,7 @@ export default Vue.extend( {
 }
 
 @media only screen and (max-width: 500px) {
-  .pokemons {
+  .pokémons {
     text-align: center;
 
     &-header {

@@ -43,10 +43,10 @@
         <div class="flip-box">
           <div class="flip-box-inner">
             <div class="flip-box-front">
-              <img alt="Pokemon image front" v-if="this.pokemon.sprites" :src="this.pokemon.sprites.front_default || require('@/assets/placeholder.png')">
+              <img alt="PokMon image front" v-if="this.pokemon.sprites" :src="this.pokemon.sprites.front_default || require('@/assets/placeholder.png')">
             </div>
             <div class="flip-box-back">
-              <img alt="Pokemon image back" v-if="this.pokemon.sprites" :src="this.pokemon.sprites.back_default || require('@/assets/placeholder.png')">
+              <img alt="PokMon image back" v-if="this.pokemon.sprites" :src="this.pokemon.sprites.back_default || require('@/assets/placeholder.png')">
             </div>
           </div>
         </div>
@@ -60,11 +60,11 @@
 
 <script>
 import Vue from 'vue'
-import PokemonService from "@/helpers/services/PokemonService";
+import PokémonService from "@/helpers/services/PokémonService";
 import Loader from "@/helpers/Loader";
 
 export default Vue.extend({
-  name: "PokemonDetail",
+  name: "PokémonDetail",
   data() {
     return {
       pokemon: Object,
@@ -74,14 +74,16 @@ export default Vue.extend({
     document.body.addEventListener('keydown', this.handleKeyDown);
     if (this.$route.path === "/random") { this.loadRandomPokemon(); }
     else { this.loadPokemon(this.$route.params.pokemonName); }
+    this.enableBodyScroll(false);
   },
   destroyed() {
     document.body.removeEventListener('keydown', this.handleKeyDown);
+    this.enableBodyScroll(true);
   },
   methods: {
     loadPokemon(pokemonName) {
       Loader.showLoader();
-      PokemonService.getPokemon(pokemonName).then(jsonData => {
+      PokémonService.getPokemon(pokemonName).then(jsonData => {
         this.pokemon = jsonData;
         setTimeout(() => {
           this.setStatsMainColor();
@@ -90,7 +92,7 @@ export default Vue.extend({
     },
     loadRandomPokemon() {
       Loader.showLoader();
-      PokemonService.getRandomPokemon().then(jsonData => {
+      PokémonService.getRandomPokemon().then(jsonData => {
         this.pokemon = jsonData;
         setTimeout(() => {
           this.setStatsMainColor();
@@ -108,6 +110,10 @@ export default Vue.extend({
     },
     handleKeyDown(e) {
       if (e.key === "Escape") { this.$router.back(); }
+    },
+    enableBodyScroll(enable) {
+      if (enable) { document.body.classList.remove('scroll_disabled');
+      } else { document.body.classList.add('scroll_disabled'); }
     }
   },
 })

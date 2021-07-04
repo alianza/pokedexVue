@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: "PokeFooter"
+  name: "PokéFooter"
 }
 </script>
 

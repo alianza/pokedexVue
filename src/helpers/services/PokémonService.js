@@ -1,5 +1,5 @@
 
-const PokemonService = {
+const PokémonService = {
     baseUrl: "https://pokeapi.co/api/v2",
     basePageLimit: 20,
     totalNumberOfPokemon: 0,
@@ -71,4 +71,4 @@ const PokemonService = {
     },
 }
 
-export default PokemonService;
+export default PokémonService;

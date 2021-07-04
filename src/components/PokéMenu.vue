@@ -16,14 +16,14 @@
 import Vue from "vue";
 
 export default Vue.extend({
-  name: "PokeMenu",
+  name: "PokéMenu",
   methods: {
     handleMenuIconClick() {
       this.$emit('clickedMenuIcon');
     },
     about() {
       alert('This is a Web PokéDex Application!\n' +
-          'Discover countless Pokemon and their info!\n' +
+          'Discover countless PokMon and their info!\n' +
           'Made by Jan-Willem van Bremen - 2020')
     },
   }

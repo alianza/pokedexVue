@@ -1,11 +1,11 @@
 <template>
-  <div class="pokemons">
-    <div class="pokemons-header">
+  <div class="pokémons">
+    <div class="pokémons-header">
       <h1>Pick a creature!</h1>
       <div class="button button-sort" v-on:click="sort">Sort ⇕</div>
     </div>
-    <ul class="pokemons-list">
-      <li v-bind:key="pokemon.name" v-for="pokemon in jsonData.results" class="pokemons-item">
+    <ul class="pokémons-list">
+      <li v-bind:key="pokemon.name" v-for="pokemon in jsonData.results" class="pokémons-item">
         <router-link :to="{ name: 'allpokemondetail', params: { pokemonName: pokemon.name } }">
           <pokemon-item @loaded="itemLoaded" @init="++itemsToLoad" :pokemonRef="pokemon"></pokemon-item></router-link>
       </li>
@@ -20,13 +20,13 @@
 
 <script>
 import Vue from "vue";
-import PokemonItem from "../PokemonItem.vue";
-import PokemonService from "@/helpers/services/PokemonService";
+import PokemonItem from "../PokémonItem.vue";
+import PokémonService from "@/helpers/services/PokémonService";
 import Loader from "@/helpers/Loader";
 import scrollToTop from "@/helpers/ScrollToTop";
 
 export default Vue.extend( {
-  name: 'AllPokemons',
+  name: 'AllPokémons',
   components: {
     PokemonItem
   },
@@ -43,30 +43,30 @@ export default Vue.extend( {
   mounted() {
     if (this.$route.params.page) {
       const currentPage = parseInt(this.$route.params.page);
-      const offset = (currentPage - 1) * PokemonService.basePageLimit;
+      const offset = (currentPage - 1) * PokémonService.basePageLimit;
       this.page = currentPage;
-      this.loadPagedPokemons(offset);
+      this.loadPagedPokémons(offset);
     } else {
-      this.loadPokemons();
+      this.loadPokémons();
     }
   },
   methods: {
-    loadPokemons() {
+    loadPokémons() {
       Loader.showLoader();
-      PokemonService.getPokemons().then(jsonData => {
+      PokémonService.getPokemons().then(jsonData => {
         this.jsonData = jsonData;
       });
     },
-    loadPagedPokemons(offset) {
+    loadPagedPokémons(offset) {
       Loader.showLoader();
-      PokemonService.getPagedPokemons(offset).then(json => {
+      PokémonService.getPagedPokemons(offset).then(json => {
         this.jsonData = json;
       })
     },
     loadNextPage() {
       Loader.showLoader();
       ++this.page;
-      PokemonService.doLoad(this.jsonData.next).then(json => {
+      PokémonService.doLoad(this.jsonData.next).then(json => {
         this.jsonData = json;
         scrollToTop();
       });
@@ -74,7 +74,7 @@ export default Vue.extend( {
     loadPrevPage() {
       Loader.showLoader();
       --this.page;
-      PokemonService.doLoad(this.jsonData.previous).then(json => {
+      PokémonService.doLoad(this.jsonData.previous).then(json => {
         this.jsonData = json;
         scrollToTop();
       });
@@ -96,7 +96,7 @@ export default Vue.extend( {
 
 <style lang="scss" scoped>
 
-.pokemons {
+.pokémons {
 
   &-header {
 
@@ -139,7 +139,7 @@ export default Vue.extend( {
 }
 
 @media only screen and (max-width: 500px) {
-  .pokemons {
+  .pokémons {
     text-align: center;
 
     &-header {

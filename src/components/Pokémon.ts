@@ -1,4 +1,4 @@
-export class Pokemon {
+export class Pokémon {
     name: string;
     base_experience: number;
     height: number;

@@ -4,10 +4,10 @@ import App from './App.vue'
 import Fragment from 'vue-fragment'
 
 //components
-import AllPokemons from './components/Pokemons/AllPokemons'
-import TypePokemons from './components/Pokemons/TypePokemons'
+import AllPokémons from './components/Pokemons/AllPokémons'
+import TypePokémons from './components/Pokemons/TypePokémons'
 import Types from './components/Types'
-import PokemonDetail from "./components/PokemonDetail";
+import PokémonDetail from "./components/PokémonDetail";
 
 // Filters
 import './helpers/filters/Capitalize'
@@ -19,13 +19,13 @@ Vue.use(Fragment.Plugin)
 Vue.config.productionTip = false;
 
 const routes = [
-  { path: '/', component: AllPokemons },
-  { path: '/page/:page', component: AllPokemons },
+  { path: '/', component: AllPokémons },
+  { path: '/page/:page', component: AllPokémons },
   { path: '/types', component: Types },
-  { path: '/types/:type', component: TypePokemons },
-  { path: '/pokemon/:pokemonName', name: 'allpokemondetail' ,components: { default: AllPokemons, detail: PokemonDetail } },
-  { path: '/types/:type/pokemon/:pokemonName', name: 'typespokemondetail' ,components: { default: TypePokemons, detail: PokemonDetail } },
-  { path: '/random', name: 'random' ,components: { default: AllPokemons, detail: PokemonDetail } },
+  { path: '/types/:type', component: TypePokémons },
+  { path: '/pokemon/:pokemonName', name: 'allpokemondetail' ,components: { default: AllPokémons, detail: PokémonDetail } },
+  { path: '/types/:type/pokemon/:pokemonName', name: 'typespokemondetail' ,components: { default: TypePokémons, detail: PokémonDetail } },
+  { path: '/random', name: 'random' ,components: { default: AllPokémons, detail: PokémonDetail } },
 ];
 
 const router = new VueRouter({ routes, linkExactActiveClass: "active", mode: "history" });

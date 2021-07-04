@@ -1,6 +1,6 @@
 import Vue from 'vue'
 
-// Filter for Colors associated with different Pokemon types
+// Filter for Colors associated with different Pokémon types
 Vue.filter('typeToColor', function (value) {
     if (!value) return ''
     value = value.toString()

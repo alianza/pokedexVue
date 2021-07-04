@@ -1,16 +1,16 @@
 <template>
-    <div v-if="isLoaded && pokemon" class="pokemon" :style="[pokemon.sprites.front_default ? {backgroundImage: 'url(' + pokemon.sprites.front_default + ')'} : {backgroundImage: 'url(' + require('@/assets/placeholder.png') + ')', backgroundSize: '50%', backgroundPosition: 'center'}]">
-      <h3 class="pokemon-name">{{ pokemon.name | capitalize}}</h3>
-      <p class="pokemon-type" :style="{backgroundColor: $options.filters.typeToColor(pokemon.types[0].type.name)}">{{ pokemon.types[0].type.name | capitalize }}</p>
+    <div v-if="isLoaded && pokemon" class="pokémon" :style="[pokemon.sprites.front_default ? {backgroundImage: 'url(' + pokemon.sprites.front_default + ')'} : {backgroundImage: 'url(' + require('@/assets/placeholder.png') + ')', backgroundSize: '50%', backgroundPosition: 'center'}]">
+      <h3 class="pokémon-name">{{ pokemon.name | capitalize}}</h3>
+      <p class="pokémon-type" :style="{backgroundColor: $options.filters.typeToColor(pokemon.types[0].type.name)}">{{ pokemon.types[0].type.name | capitalize }}</p>
     </div>
 </template>
 
 <script>
 import Vue from 'vue'
-import PokemonService from "../helpers/services/PokemonService";
+import PokémonService from "../helpers/services/PokémonService";
 
 export default Vue.extend({
-  name: 'pokemonItem',
+  name: 'pokémonItem',
   props: {
     pokemonRef: Object,
   },
@@ -26,7 +26,7 @@ export default Vue.extend({
   },
   methods: {
     loadPokemon() {
-      PokemonService.getPokemon(this.pokemonRef.name).then(jsonData => {
+      PokémonService.getPokemon(this.pokemonRef.name).then(jsonData => {
         this.pokemon = jsonData;
         this.isLoaded = true;
         this.$emit('loaded');
@@ -38,7 +38,7 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 
-.pokemon {
+.pokémon {
   box-shadow: 0 0 5px rgba(0, 0, 0, .5);
   border-radius: .2em;
   padding: .5em;

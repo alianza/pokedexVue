@@ -13,7 +13,7 @@
 import Vue from "vue";
 
 export default Vue.extend({
-  name: "PokeHeader",
+  name: "PokéHeader",
   props: {
     title: String,
   },
