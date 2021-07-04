@@ -28,7 +28,7 @@ const PokémonService = {
         }).catch(e => { console.log('Error', e) });
     },
 
-    getPokemon(pokémonName) {
+    getPokémon(pokémonName) {
         return this.doLoad(`/pokemon/${pokémonName}`).then(jsonData => {
             return jsonData;
         }).catch(e => { console.log('Error', e) });
@@ -54,7 +54,7 @@ const PokémonService = {
     getRandomPokémon() {
         return this.getTotalNumberOfPokémon().then(() => {
             const randomIndex = Math.floor(Math.random() * (this.totalNumberOfPokémon - 1)) + 1;
-            return this.getPokemon(randomIndex).then(jsonData => { return jsonData; })
+            return this.getPokémon(randomIndex).then(jsonData => { return jsonData; })
                 .catch(e => {console.log('Error', e)});
         });
     },

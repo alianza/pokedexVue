@@ -34,7 +34,7 @@ export default Vue.extend( {
     this.loadTypes();
   },
   methods: {
-    loadTypes() { // Load all pokemon types
+    loadTypes() { // Load all pokémon types
       Loader.showLoader();
       PokémonService.getTypes().then(jsonData => {
         this.jsonData = jsonData;

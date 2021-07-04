@@ -7,32 +7,32 @@
 
       <div class="details-container">
 
-      <div class="details-info" v-if="this.pokemon">
-        <h1 class="details-info-name">{{ pokemon.name | capitalize }}</h1>
+      <div class="details-info" v-if="this.pokémon">
+        <h1 class="details-info-name">{{ pokémon.name | capitalize }}</h1>
         <div class="details-info-profile">
           <h2>Profile</h2>
           <dl>
             <dt><h4>Base Experience</h4></dt>
-            <dd>{{ pokemon.base_experience }} xp</dd>
+            <dd>{{ pokémon.base_experience }} xp</dd>
 
             <dt><h4>Height</h4></dt>
-            <dd>{{ pokemon.height / 10 }} m</dd>
+            <dd>{{ pokémon.height / 10 }} m</dd>
 
             <dt><h4>Weight</h4></dt>
-            <dd>{{ pokemon.weight / 10 }} kg</dd>
+            <dd>{{ pokémon.weight / 10 }} kg</dd>
           </dl>
         </div>
         <div class="details-info-types">
           <h2>Types</h2>
           <router-link tag="div" :to="`/types/${type.type.name}`" class="details-info-types-type"
-                       v-on:click="$router.push(`/type/${type.type.name}`);" v-bind:key="type.type.name" v-for="type in pokemon.types"
+                       v-on:click="$router.push(`/type/${type.type.name}`);" v-bind:key="type.type.name" v-for="type in pokémon.types"
                :style="{backgroundColor: $options.filters.typeToColor(type.type.name)}">{{ type.type.name | capitalize }}
           </router-link>
         </div>
 
         <div class="details-info-stats">
           <h2>Stats</h2>
-          <div class="details-info-stats-stat" v-bind:key="stat.stat.name" v-for="stat in pokemon.stats">
+          <div class="details-info-stats-stat" v-bind:key="stat.stat.name" v-for="stat in pokémon.stats">
             {{ stat.stat.name | capitalize }}
             <div :style="{width: stat.base_stat + 'px'}">{{ stat.base_stat }}</div>
           </div>
@@ -43,18 +43,18 @@
         <div class="flip-box">
           <div class="flip-box-inner">
             <div class="flip-box-front">
-              <img alt="PokMon image front" v-if="this.pokemon.sprites" :src="this.pokemon.sprites.front_default || require('@/assets/placeholder.png')">
+              <img alt="PokMon image front" v-if="this.pokémon.sprites" :src="this.pokémon.sprites.front_default || require('@/assets/placeholder.png')">
             </div>
             <div class="flip-box-back">
-              <img alt="PokMon image back" v-if="this.pokemon.sprites" :src="this.pokemon.sprites.back_default || require('@/assets/placeholder.png')">
+              <img alt="PokMon image back" v-if="this.pokémon.sprites" :src="this.pokémon.sprites.back_default || require('@/assets/placeholder.png')">
             </div>
           </div>
         </div>
-        <button v-if="!this.pokemon.back_default" v-on:click="toggleImage" class="button">↻</button>
+        <button v-if="!this.pokémon.back_default" v-on:click="toggleImage" class="button">↻</button>
       </div>
     </div>
     </div>
-    <div class="button button-random" v-if="this.$route.path === '/random'" v-on:click="loadRandomPokemon">Next →</div>
+    <div class="button button-random" v-if="this.$route.path === '/random'" v-on:click="loadRandomPokémon()">Next →</div>
   </div>
 </template>
 
@@ -67,13 +67,13 @@ export default Vue.extend({
   name: "PokémonDetail",
   data() {
     return {
-      pokemon: Object,
+      pokémon: Object,
     }
   },
   mounted() {
     document.body.addEventListener('keydown', this.handleKeyDown);
-    if (this.$route.path === "/random") { this.loadRandomPokemon(); }
-    else { this.loadPokemon(this.$route.params.pokemonName); }
+    if (this.$route.path === "/random") { this.loadRandomPokémon(); }
+    else { this.loadPokémon(this.$route.params.pokemonName); }
     this.enableBodyScroll(false);
   },
   destroyed() {
@@ -81,26 +81,26 @@ export default Vue.extend({
     this.enableBodyScroll(true);
   },
   methods: {
-    loadPokemon(pokemonName) {
+    loadPokémon(pokémonName) {
       Loader.showLoader();
-      PokémonService.getPokemon(pokemonName).then(jsonData => {
-        this.pokemon = jsonData;
+      PokémonService.getPokémon(pokémonName).then(jsonData => {
+        this.pokémon = jsonData;
         setTimeout(() => {
           this.setStatsMainColor();
           Loader.hideLoader();
         }, 0)});
     },
-    loadRandomPokemon() {
+    loadRandomPokémon() {
       Loader.showLoader();
       PokémonService.getRandomPokémon().then(jsonData => {
-        this.pokemon = jsonData;
+        this.pokémon = jsonData;
         setTimeout(() => {
           this.setStatsMainColor();
           Loader.hideLoader();
         }, 0)});
       },
     setStatsMainColor() {
-      const mainColor = this.$options.filters.typeToColor(this.pokemon.types[0].type.name);
+      const mainColor = this.$options.filters.typeToColor(this.pokémon.types[0].type.name);
       for (let stat of document.getElementsByClassName('details-info-stats-stat')) {
         stat.children[0].style.backgroundColor = mainColor;
       }

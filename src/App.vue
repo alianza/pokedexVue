@@ -1,9 +1,9 @@
 <template>
   <div id="app" class="menu-active">
 
-    <PokeHeader @clickedMenuIcon="toggleMenu" :title="title"></PokeHeader>
+    <PokéHeader @clickedMenuIcon="toggleMenu" :title="title"></PokéHeader>
 
-    <PokeMenu @clickedMenuIcon="toggleMenu"></PokeMenu>
+    <PokéMenu @clickedMenuIcon="toggleMenu"></PokéMenu>
 
     <div class="content">
 
@@ -11,7 +11,7 @@
 
     </div>
 
-    <PokeFooter></PokeFooter>
+    <PokéFooter></PokéFooter>
 
     <div id="loader">
       <div></div>
@@ -26,16 +26,16 @@
 
 <script>
 import Vue from "vue";
-import PokeHeader from "./components/PokéHeader.vue";
-import PokeMenu from "./components/PokéMenu.vue"
-import PokeFooter from "./components/PokéFooter.vue";
+import PokéHeader from "./components/PokéHeader.vue";
+import PokéMenu from "./components/PokéMenu.vue"
+import PokéFooter from "./components/PokéFooter.vue";
 
 export default Vue.extend({
   name: 'App',
   components: {
-    PokeHeader,
-    PokeMenu,
-    PokeFooter,
+    PokéHeader,
+    PokéMenu,
+    PokéFooter,
   },
   data() {
     return {

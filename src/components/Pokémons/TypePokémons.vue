@@ -1,18 +1,15 @@
 <template>
   <div class="pokémons">
     <div class="pokémons-header">
-      <h1>Pick a creature!</h1>
+      <h1>{{ $route.params.type | capitalize }} type pokémons</h1>
       <div class="button button-sort" v-on:click="sort">Sort ⇕</div>
     </div>
     <ul class="pokémons-list">
-      <li v-bind:key="pokemon.name" v-for="pokemon in jsonData.results" class="pokémons-item">
-        <router-link :to="{ name: 'allpokemondetail', params: { pokemonName: pokemon.name } }">
-          <pokemon-item @loaded="itemLoaded" @init="++itemsToLoad" :pokemonRef="pokemon"></pokemon-item></router-link>
+      <li v-bind:key="pokémon.name" v-for="pokémon in jsonData.results" class="pokémons-item">
+        <router-link :to="{ name: 'typespokemondetail', params: { type: $route.params.type, pokemonName: pokémon.name } }">
+          <PokémonItem @loaded="itemLoaded" @init="++itemsToLoad" :pokémonRef="pokémon"></PokémonItem></router-link>
       </li>
     </ul>
-
-    <router-link :to="`/page/${this.page - 1}`" class="button button-prev" v-if="jsonData.previous" v-on:click.native="loadPrevPage">Previous page</router-link>
-    <router-link :to="`/page/${this.page + 1}`" class="button button-next" v-if="jsonData.next" v-on:click.native="loadNextPage">Next page</router-link>
 
     <h2 v-if="!jsonData.results.length">No results :(</h2>
   </div>
@@ -20,63 +17,41 @@
 
 <script>
 import Vue from "vue";
-import PokemonItem from "../PokémonItem.vue";
+import PokémonItem from "../PokémonItem.vue";
 import PokémonService from "@/helpers/services/PokémonService";
 import Loader from "@/helpers/Loader";
 import scrollToTop from "@/helpers/ScrollToTop";
 
 export default Vue.extend( {
-  name: 'AllPokémons',
+  name: 'TypePokémons',
   components: {
-    PokemonItem
+    PokémonItem
   },
   data() {
     return {
       itemsToLoad: 0,
       loadedItems: 0,
       jsonData: {
-        results: { }
+        results: {}
       },
       page: 1,
     }
   },
-  mounted() {
-    if (this.$route.params.page) {
-      const currentPage = parseInt(this.$route.params.page);
-      const offset = (currentPage - 1) * PokémonService.basePageLimit;
-      this.page = currentPage;
-      this.loadPagedPokémons(offset);
-    } else {
-      this.loadPokémons();
+  watch:{
+    $route (to, from){
+      if ((to.name === "typespokemondetail" || from.name === "typespokemondetail") && to.params.type === from.params.type) { return; } // Don't refresh data when going to or coming from details page and type hasn't changed
+      this.loadTypePokémons(this.$route.params.type);
+      scrollToTop();
     }
   },
+  mounted() {
+    this.loadTypePokémons(this.$route.params.type);
+  },
   methods: {
-    loadPokémons() {
+    loadTypePokémons(type) {
       Loader.showLoader();
-      PokémonService.getPokémons().then(jsonData => {
-        this.jsonData = jsonData;
-      });
-    },
-    loadPagedPokémons(offset) {
-      Loader.showLoader();
-      PokémonService.getPagedPokémons(offset).then(json => {
+      PokémonService.getTypePokémons(type).then(json => {
         this.jsonData = json;
-      })
-    },
-    loadNextPage() {
-      Loader.showLoader();
-      ++this.page;
-      PokémonService.doLoad(this.jsonData.next).then(json => {
-        this.jsonData = json;
-        scrollToTop();
-      });
-    },
-    loadPrevPage() {
-      Loader.showLoader();
-      --this.page;
-      PokémonService.doLoad(this.jsonData.previous).then(json => {
-        this.jsonData = json;
-        scrollToTop();
       });
     },
     itemLoaded() { // Emitted method by children when loaded content

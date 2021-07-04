@@ -3,7 +3,7 @@
     <div v-on:click="handleMenuIconClick" class="menu-close">✖</div>
     <h1>Menu</h1>
     <ul class="menu-top">
-      <router-link tag="li" to="/" :active-class="$route.path.includes('pokemon') && !$route.path.includes('type') ? 'active' : ''">Home</router-link>
+      <router-link tag="li" to="/" :active-class="$route.path.includes('pokémon') && !$route.path.includes('type') ? 'active' : ''">Home</router-link>
       <router-link tag="li" to="/types" :active-class="$route.path.includes('type') ? 'active' : ''">Types</router-link>
       <router-link tag="li" to="/random">Random Pokémon</router-link>
       <li v-on:click="about">About</li>

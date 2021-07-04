@@ -4,8 +4,8 @@ import App from './App.vue'
 import Fragment from 'vue-fragment'
 
 //components
-import AllPokémons from './components/Pokemons/AllPokémons'
-import TypePokémons from './components/Pokemons/TypePokémons'
+import AllPokémons from './components/Pokémons/AllPokémons'
+import TypePokémons from './components/Pokémons/TypePokémons'
 import Types from './components/Types'
 import PokémonDetail from "./components/PokémonDetail";
 
