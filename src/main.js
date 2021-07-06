@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import App from './App.vue'
 import Fragment from 'vue-fragment'
+import './registerServiceWorker'
 
 //components
 import AllPokémons from './components/Pokémons/AllPokémons'
