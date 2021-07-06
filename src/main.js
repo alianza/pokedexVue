@@ -2,7 +2,6 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import App from './App.vue'
 import Fragment from 'vue-fragment'
-import './registerServiceWorker'
 
 //components
 import AllPokémons from './components/Pokémons/AllPokémons'
@@ -13,6 +12,8 @@ import PokémonDetail from "./components/PokémonDetail";
 // Filters
 import './helpers/filters/Capitalize'
 import './helpers/filters/TypeToColor'
+
+import './registerServiceWorker'
 
 Vue.use(VueRouter);
 Vue.use(Fragment.Plugin)
