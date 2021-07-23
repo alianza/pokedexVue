@@ -25,9 +25,9 @@ const routes = [
   { path: '/page/:page', component: AllPokémons },
   { path: '/types', component: Types },
   { path: '/types/:type', component: TypePokémons },
-  { path: '/pokemon/:pokemonName', name: 'allpokemondetail' ,components: { default: AllPokémons, detail: PokémonDetail } },
-  { path: '/types/:type/pokemon/:pokemonName', name: 'typespokemondetail' ,components: { default: TypePokémons, detail: PokémonDetail } },
-  { path: '/random', name: 'random' ,components: { default: AllPokémons, detail: PokémonDetail } },
+  { path: '/pokemon/:pokemonName', name: 'allpokemondetail', components: { default: AllPokémons, detail: PokémonDetail } },
+  { path: '/types/:type/pokemon/:pokemonName', name: 'typespokemondetail', components: { default: TypePokémons, detail: PokémonDetail } },
+  { path: '/random', name: 'random', components: { default: AllPokémons, detail: PokémonDetail } },
 ];
 
 const router = new VueRouter({ routes, linkExactActiveClass: "active", mode: "history" });
